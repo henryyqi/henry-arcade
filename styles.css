@@ -12,7 +12,7 @@
 .game-item {
     background-color: #EEEEEE;
     border: 2px solid black;
-    height: 64px;
+    height: 128px;
     flex: 1;
     margin: 4px;
     text-align: center;

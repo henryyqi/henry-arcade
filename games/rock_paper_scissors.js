@@ -6,6 +6,8 @@
 5. play again?
 */
 
+let scores = { user: 0, computer: 0, ties: 0 };
+
 function getComputerChoice() {
     const choices = ['rock', 'paper', 'scissors'];
     const randomIndex = Math.floor(Math.random() * choices.length);
@@ -26,6 +28,7 @@ function getUserChoice() {
 
 function determineWinner(userChoice, computerChoice) {
     if (userChoice === computerChoice) {
+        scores.ties += 1;
         return "It's a tie!";
     }
 
@@ -34,10 +37,21 @@ function determineWinner(userChoice, computerChoice) {
         (userChoice === 'paper' && computerChoice === 'rock') ||
         (userChoice === 'scissors' && computerChoice === 'paper')
     ) {
+        scores.user += 1;
         return "You win!";
     } else {
+        scores.computer += 1;
         return "Computer wins!";
     }
+}
+
+function displayScores() {
+    alert(`Scores:\nYou: ${scores.user}\nComputer: ${scores.computer}\nTies: ${scores.ties}`);
+}
+
+function resetScores() {
+    scores = { user: 0, computer: 0, ties: 0 };
+    alert("Scores have been reset.");
 }
 
 function playGame() {

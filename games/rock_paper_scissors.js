@@ -6,6 +6,19 @@
 5. play again?
 */
 
+// testing
+document.getElementById('rock').addEventListener('click', () => playGame('rock'));
+document.getElementById('paper').addEventListener('click', () => playGame('paper'));
+document.getElementById('scissors').addEventListener('click', () => playGame('scissors'));
+
+const resultDiv = document.getElementById('result');
+const scoreboardDiv = document.getElementById('scoreboard');
+
+const resetButton = document.getElementById('reset');
+resetButton.addEventListener('click', resetScores);
+
+// game logic
+
 let scores = { user: 0, computer: 0, ties: 0 };
 
 function getComputerChoice() {
@@ -45,8 +58,12 @@ function determineWinner(userChoice, computerChoice) {
     }
 }
 
-function displayScores() {
-    alert(`Scores:\nYou: ${scores.user}\nComputer: ${scores.computer}\nTies: ${scores.ties}`);
+function updateScoreboard() {
+    scoreboardDiv.textContent = `User: ${scores.user} | Computer: ${scores.computer} | Ties: ${scores.ties}`;
+}
+
+function displayResult(message) {
+    resultDiv.textContent = message;
 }
 
 function resetScores() {
@@ -58,8 +75,8 @@ function playGame() {
     const userChoice = getUserChoice();
     const computerChoice = getComputerChoice();
     const result = determineWinner(userChoice, computerChoice);
-
-    alert(`You chose: ${userChoice}\nComputer chose: ${computerChoice}\n${result}`);
+    displayResult(`You chose ${userChoice}. Computer chose ${computerChoice}. ${result}`);
+    updateScoreboard();
 }
 
 playGame();

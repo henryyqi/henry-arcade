@@ -19,6 +19,36 @@
 
 }
 
+.game-button {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.game-button:hover {
+    background-color: #CCCCCC;
+    transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+    .game-menu {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .game-item {
+        margin: 8px 0;
+    }
+    .game-button {
+        width: 100%;
+        font-size: 1.2rem;
+        padding: 16px;
+    }
+}
+
 h1 {
     background-color:beige;
     font-size: 40px;

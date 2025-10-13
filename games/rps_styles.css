@@ -44,7 +44,7 @@ h1 {
 .reset-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 60px;
+    height: 100px;
     width: 120px;
     margin: 10px;
     padding: 12px;
@@ -79,7 +79,7 @@ h1 {
         padding: 16px;
     }
     .reset-button {
-        width: 50%;
+        width: 100%;
         font-size: 1.2rem;
         padding: 16px;
     }
@@ -91,6 +91,7 @@ h1 {
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
+    flex: 1 1 auto;
 }
 
 .scoreboard-banner {
@@ -99,4 +100,5 @@ h1 {
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
+    flex: 1 1 auto;
 }

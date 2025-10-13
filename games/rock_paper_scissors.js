@@ -8,8 +8,8 @@
 
 // testing
 document.getElementById('rock').addEventListener('click', () => {playGame('rock'); updateUserChoiceDisplay('rock');});
-document.getElementById('paper').addEventListener('click', () => playGame('paper'));
-document.getElementById('scissors').addEventListener('click', () => playGame('scissors'));
+document.getElementById('paper').addEventListener('click', () => {playGame('paper'); updateUserChoiceDisplay('paper');});
+document.getElementById('scissors').addEventListener('click', () => {playGame('scissors'); updateUserChoiceDisplay('scissors');});
 
 const resultDiv = document.getElementById('result');
 const scoreboardDiv = document.getElementById('scoreboard');
@@ -19,14 +19,14 @@ resetButton.addEventListener('click', resetScores);
 
 function updateUserChoiceDisplay(userChoice) {
     const userChoiceDiv = document.getElementById('user-choice');
-    userChoiceDiv.innerHTML = `YOU CHOSE<br><img src="./rps_pics/${userChoice}1.png" alt="${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)} Icon" height="100" width="100" class="icon">`;
+    userChoiceDiv.innerHTML = `YOU CHOSE<br><img src="./rps_pics/${userChoice}_icon.png" alt="${userChoice.charAt(0).toUpperCase()} Icon" height="100" width="100" class="icon">`;
 }
 
 // elements
 const computerChoiceDiv = document.getElementById('computer-choice');
 
 function updateComputerChoiceDisplay(computerChoice) {
-    computerChoiceDiv.innerHTML = `COMPUTER CHOSE<br><img src="./rps_pics/${computerChoice}1.png" alt="${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} Icon" height="100" width="100" class="icon">`;
+    computerChoiceDiv.innerHTML = `COMPUTER CHOSE<br><img src="./rps_pics/${computerChoice}_icon.png" alt="${computerChoice.charAt(0).toUpperCase()} Icon" height="100" width="100" class="icon">`;
 }
 
 // game logic

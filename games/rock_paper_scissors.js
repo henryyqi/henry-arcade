@@ -27,18 +27,6 @@ function getComputerChoice() {
     return choices[randomIndex];
 }
 
-// function getUserChoice() {
-//     let userInput = prompt("Enter rock(r), paper(p), or scissors(s):").toLowerCase();
-//     while (!['rock', 'paper', 'scissors','r','p','s'].includes(userInput)) {
-//         userInput = prompt("Invalid choice. Please enter rock(r), paper(p), or scissors(s):").toLowerCase();
-//     }
-//     if (userInput === 'r') userInput = 'rock';
-//     if (userInput === 'p') userInput = 'paper';
-//     if (userInput === 's') userInput = 'scissors';
-
-//     return userInput;
-// }
-
 function determineWinner(userChoice, computerChoice) {
     if (userChoice === computerChoice) {
         scores.ties += 1;

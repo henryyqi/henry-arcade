@@ -33,6 +33,15 @@
 
 }
 
+.rps-items {
+    background-color: #EEEEEE;
+    border: 2px solid black;
+    height: 128px;
+    flex: 1 1 auto;
+    margin: 4px;
+    text-align: center;
+}
+
 .game-button {
     background-color: #DDDDDD;
     border: 2px solid black;

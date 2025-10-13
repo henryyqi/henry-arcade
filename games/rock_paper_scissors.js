@@ -27,17 +27,17 @@ function getComputerChoice() {
     return choices[randomIndex];
 }
 
-function getUserChoice() {
-    let userInput = prompt("Enter rock(r), paper(p), or scissors(s):").toLowerCase();
-    while (!['rock', 'paper', 'scissors','r','p','s'].includes(userInput)) {
-        userInput = prompt("Invalid choice. Please enter rock(r), paper(p), or scissors(s):").toLowerCase();
-    }
-    if (userInput === 'r') userInput = 'rock';
-    if (userInput === 'p') userInput = 'paper';
-    if (userInput === 's') userInput = 'scissors';
+// function getUserChoice() {
+//     let userInput = prompt("Enter rock(r), paper(p), or scissors(s):").toLowerCase();
+//     while (!['rock', 'paper', 'scissors','r','p','s'].includes(userInput)) {
+//         userInput = prompt("Invalid choice. Please enter rock(r), paper(p), or scissors(s):").toLowerCase();
+//     }
+//     if (userInput === 'r') userInput = 'rock';
+//     if (userInput === 'p') userInput = 'paper';
+//     if (userInput === 's') userInput = 'scissors';
 
-    return userInput;
-}
+//     return userInput;
+// }
 
 function determineWinner(userChoice, computerChoice) {
     if (userChoice === computerChoice) {
@@ -68,11 +68,11 @@ function displayResult(message) {
 
 function resetScores() {
     scores = { user: 0, computer: 0, ties: 0 };
-    alert("Scores have been reset.");
+    updateScoreboard();
+    displayResult("Scores have been reset.");
 }
 
-function playGame() {
-    const userChoice = getUserChoice();
+function playGame(userChoice) {
     const computerChoice = getComputerChoice();
     const result = determineWinner(userChoice, computerChoice);
     displayResult(`You chose ${userChoice}. Computer chose ${computerChoice}. ${result}`);

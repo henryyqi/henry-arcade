@@ -22,7 +22,9 @@
 .game-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 128px;
+    height: 196px;
+    width: 196px;
+    margin: 10px;
     padding: 12px;
     cursor: pointer;
     font-size: 16px;

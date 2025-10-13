@@ -19,14 +19,14 @@ resetButton.addEventListener('click', resetScores);
 
 function updateUserChoiceDisplay(userChoice) {
     const userChoiceDiv = document.getElementById('user-choice');
-    userChoiceDiv.innerHTML = `YOU CHOSE<br><img src="./rps_pics/${userChoice}_icon.png" alt="${userChoice.charAt(0).toUpperCase()} Icon" height="200" width="200" class="icon">`;
+    userChoiceDiv.innerHTML = `YOU CHOSE<br><img src="./rps_pics/${userChoice}_icon.png" alt="${userChoice.charAt(0).toUpperCase()} Icon" height="144" width="144" class="icon">`;
 }
 
 // elements
 const computerChoiceDiv = document.getElementById('computer-choice');
 
 function updateComputerChoiceDisplay(computerChoice) {
-    computerChoiceDiv.innerHTML = `COMPUTER CHOSE<br><img src="./rps_pics/${computerChoice}_icon.png" alt="${computerChoice.charAt(0).toUpperCase()} Icon" height="200" width="200" class="icon">`;
+    computerChoiceDiv.innerHTML = `COMPUTER CHOSE<br><img src="./rps_pics/${computerChoice}_icon.png" alt="${computerChoice.charAt(0).toUpperCase()} Icon" height="144" width="144" class="icon">`;
 }
 
 // game logic

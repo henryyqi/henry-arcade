@@ -80,4 +80,4 @@ function playGame(userChoice) {
     updateScoreboard();
 }
 
-playGame();
+// playGame();

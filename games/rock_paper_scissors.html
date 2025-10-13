@@ -10,21 +10,32 @@
         <h1>Rock Paper Scissors</h1>
         
         <div class="rps-menu">
+            <div id="result" class="result-banner"></div>
+            <div id="scoreboard" class="scoreboard-banner">User: 0 | Computer: 0 | Ties: 0</div>
+
+            <div id="user-choice" class="rps-item">
+                YOU CHOSE
+                <br>
+            </div>
+            <div id="computer-choice" class="rps-item">
+                COMPUTER CHOSE
+                <br>
+            </div>
+            <br>
+
             <button id="rock" class="game-button">Rock
-                <br><img src="./rps_pics/rock1.png" alt="Rock Icon" height="100" width="100" class="icon">
+                <br><img src="./rps_pics/rock_icon.png" alt="Rock Icon" height="100" width="100" class="icon">
             </button>
             <button id="paper" class="game-button">Paper
-                <br><img src="./rps_pics/paper1.png" alt="Paper Icon" height="100" width="100" class="icon">
+                <br><img src="./rps_pics/paper_icon.png" alt="Paper Icon" height="100" width="100" class="icon">
             </button>
             <button id="scissors" class="game-button">Scissors
-                <br><img src="./rps_pics/scissors1.png" alt="Scissors Icon" height="100" width="100" class="icon">
+                <br><img src="./rps_pics/scissors_icon.png" alt="Scissors Icon" height="100" width="100" class="icon">
             </button>
-        </div>
-
-        <div id="result" class="rps-item"></div>
-        <div id="scoreboard">User: 0 | Computer: 0 | Ties: 0</div>
-        <div id="reset-container">
-            <button id="reset" class="game-button">Reset Scores</button>
+        
+            <div id="reset-container">
+                <button id="reset" class="reset-button">Reset Scores</button>
+            </div>
         </div>
 
         <script src="rock_paper_scissors.js"></script>

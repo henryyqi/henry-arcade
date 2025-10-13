@@ -7,7 +7,7 @@
 */
 
 // testing
-document.getElementById('rock').addEventListener('click', () => playGame('rock'));
+document.getElementById('rock').addEventListener('click', () => {playGame('rock'); updateUserChoiceDisplay('rock');});
 document.getElementById('paper').addEventListener('click', () => playGame('paper'));
 document.getElementById('scissors').addEventListener('click', () => playGame('scissors'));
 
@@ -16,6 +16,18 @@ const scoreboardDiv = document.getElementById('scoreboard');
 
 const resetButton = document.getElementById('reset');
 resetButton.addEventListener('click', resetScores);
+
+function updateUserChoiceDisplay(userChoice) {
+    const userChoiceDiv = document.getElementById('user-choice');
+    userChoiceDiv.innerHTML = `YOU CHOSE<br><img src="./rps_pics/${userChoice}1.png" alt="${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)} Icon" height="100" width="100" class="icon">`;
+}
+
+// elements
+const computerChoiceDiv = document.getElementById('computer-choice');
+
+function updateComputerChoiceDisplay(computerChoice) {
+    computerChoiceDiv.innerHTML = `COMPUTER CHOSE<br><img src="./rps_pics/${computerChoice}1.png" alt="${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} Icon" height="100" width="100" class="icon">`;
+}
 
 // game logic
 

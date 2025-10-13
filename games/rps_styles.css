@@ -1,6 +1,15 @@
+h1 {
+    background-color:beige;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    left: 50%;
+    padding: 10px;
+}
+
 .rps-menu {
     background-color: #EEEEEE;
-    height: 200px;
+    height: 400px;
     padding: 30px;
     border: 2px solid black;
     display: flex;
@@ -12,8 +21,8 @@
 .rps-items {
     background-color: #EEEEEE;
     border: 2px solid black;
-    height: 256px;
-    width: 256px;
+    height: 196px;
+    width: 196px;
     flex: 1 1 auto;
     margin: 4px;
     text-align: center;
@@ -22,8 +31,21 @@
 .game-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 196px;
-    width: 196px;
+    height: 144px;
+    width: 144px;
+    margin: 10px;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.reset-button {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    height: 60px;
+    width: 120px;
     margin: 10px;
     padding: 12px;
     cursor: pointer;
@@ -33,6 +55,11 @@
 }
 
 .game-button:hover {
+    background-color: #CCCCCC;
+    transform: scale(1.05);
+}
+
+.reset-button:hover {
     background-color: #CCCCCC;
     transform: scale(1.05);
 }
@@ -51,4 +78,25 @@
         font-size: 1.2rem;
         padding: 16px;
     }
+    .reset-button {
+        width: 50%;
+        font-size: 1.2rem;
+        padding: 16px;
+    }
+}
+
+.result-banner {
+    background-color: lavender;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.scoreboard-banner {
+    background-color: lightcyan;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
 }

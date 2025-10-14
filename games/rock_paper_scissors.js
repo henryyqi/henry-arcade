@@ -31,6 +31,7 @@ function updateComputerChoiceDisplay(computerChoice) {
 // game logic
 
 let scores = { user: 0, computer: 0, ties: 0 };
+let hundredWins = [0,0]; // [user, computer]
 
 function getComputerChoice() {
     const choices = ['rock', 'paper', 'scissors'];
@@ -68,14 +69,26 @@ function displayResult(message) {
 
 function resetScores() {
     scores = { user: 0, computer: 0, ties: 0 };
+    hundredWins = [0,0];
+    secretDisplayDiv.innerHTML = `<br>`;
     updateScoreboard();
     displayResult("Scores have been reset.");
 }
 
 function checkHundredWins() {
     if (scores.user >= 100 && scores.computer <100) {
-        secretDisplayDiv.innerHTML = `CONGRATS! YOU REACHED 100 WINS! Don't you have something better to do?`;
+        hundredWins[0] = 1;
+        secretDisplayMessage();
     } else if (scores.computer >= 100 && scores.user <100) {
+        hundredWins[1] = 1;
+        secretDisplayMessage();
+    }
+}
+
+function secretDisplayMessage() {
+    if (hundredWins[0] == 1) {
+        secretDisplayDiv.innerHTML = `CONGRATS! YOU REACHED 100 WINS! Don't you have something better to do?`;
+    } else if (hundredWins[1] == 1) {
         secretDisplayDiv.innerHTML = `OH NO! THE COMPUTER REACHED 100 WINS BEFORE YOU! It's time to take a break...`;
     } else {
         secretDisplayDiv.innerHTML = `<br>`;

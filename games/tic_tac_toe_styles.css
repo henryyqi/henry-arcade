@@ -58,6 +58,19 @@ h1 {
     text-align: center;
 }
 
+.start-button {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    height: 80px;
+    width: 120px;
+    margin: 10px;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .tic-tac-toe-cell:hover {
     background-color: #CCCCCC;
     transform: scale(1.03);

@@ -42,7 +42,7 @@ function computerMove(board, computerPiece) {
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     const move = emptyCells[randomIndex];
     board[move] = computerPiece;
-    document.getElementById(`cell-${move}`).innerText = computerPiece;
+    document.getElementById(`cell-${move}`).innerText = '<img src="./tic_tac_toe_pics/${computerPiece}_icon.png" alt="${computerPiece} Icon" height="128" width="128" class="icon">';
 }
 
 function checkWin(board, piece) {
@@ -95,7 +95,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
         if (board[cellIndex] !== '') return; // cell already taken
 
         // player's move
-        board[cellIndex] = playerPiece;
+        board[cellIndex] = '<img src="./tic_tac_toe_pics/${playerPiece}_icon.png" alt="${playerPiece} Icon" height="128" width="128" class="icon">';
         cell.innerText = playerPiece;
 
         if (checkWin(board, playerPiece)) {

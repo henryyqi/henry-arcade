@@ -1,0 +1,39 @@
+h1 {
+    background-color:beige;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    left: 50%;
+    padding: 10px;
+}
+
+.tic-tac-toe-container {
+    background-color: #EEEEEE;
+    height: 600px;
+    padding: 30px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.tic-tac-toe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.tic-tac-toe-box {
+    background-color: #EEEEEE;
+    border: 2px solid black;
+    height: 256px;
+    width: 128px;
+    flex: 1;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}

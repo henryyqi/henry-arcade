@@ -11,3 +11,128 @@
 9. if no win/tie, continue until win/tie
 
 */
+// set board and pieces
+let board = ['', '', '', 
+             '', '', '', 
+             '', '', ''];
+let playerPiece = whoGoesFirst();
+let computerPiece = playerPiece === 'X' ? 'O' : 'X';
+let gameOn = false;
+
+function startGame() {
+    gameOn = true;
+}
+
+function whoGoesFirst() {
+    const choices = ['X', 'O'];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
+}
+
+function computerMove(board, computerPiece) {
+    // find all empty cells
+    let emptyCells = [];
+    for (let i = 0; i < board.length; i++) {
+        if (board[i] === '') {
+            emptyCells.push(i);
+        }
+    }
+    // randomly choose one of the empty cells
+    if (emptyCells.length === 0) return; // no moves left
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    const move = emptyCells[randomIndex];
+    board[move] = computerPiece;
+    document.getElementById(`cell-${move}`).innerText = computerPiece;
+}
+
+function checkWin(board, piece) {
+    const winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    return winConditions.some(condition => 
+        condition.every(index => board[index] === piece)
+    );
+}
+
+function checkTie(board) {
+    return board.every(cell => cell !== '');
+}
+
+function resetBoard() {
+    board = ['', '', '', '', '', '', '', '', ''];
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`cell-${i}`).innerText = '';
+    }
+    playerPiece = whoGoesFirst();
+    computerPiece = playerPiece === 'X' ? 'O' : 'X';
+    gameOn = false;
+    document.getElementById('status').innerText = `You are ${playerPiece}. Click "Start Game" to begin!`;
+}
+
+document.getElementById('start-button').addEventListener('click', () => {
+    if (!gameOn) {
+        startGame();
+        document.getElementById('status').innerText = `You are ${playerPiece}. ${playerPiece === 'X' ? "Your turn!" : "Computer's turn!"}`;
+        if (computerPiece === 'X') {
+            computerMove(board, computerPiece);
+            document.getElementById('status').innerText = `You are ${playerPiece}. Your turn!`;
+        }
+    }
+});
+
+document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
+    cell.addEventListener('click', () => {
+        if (!gameOn) return; // game not started
+        const cellIndex = parseInt(cell.id.split('-')[1]);
+        if (board[cellIndex] !== '') return; // cell already taken
+
+        // player's move
+        board[cellIndex] = playerPiece;
+        cell.innerText = playerPiece;
+
+        if (checkWin(board, playerPiece)) {
+            document.getElementById('status').innerText = 'You win!';
+            gameOn = false;
+            setTimeout(resetBoard, 3000);
+            return;
+        }
+
+        if (checkTie(board)) {
+            document.getElementById('status').innerText = "It's a tie!";
+            gameOn = false;
+            setTimeout(resetBoard, 3000);
+            return;
+        }
+
+        // computer's move
+        document.getElementById('status').innerText = "Computer's turn!";
+        setTimeout(() => {1000}, () => {
+            computerMove(board, computerPiece);
+
+            if (checkWin(board, computerPiece)) {
+                document.getElementById('status').innerText = 'Computer wins!';
+                gameOn = false;
+                setTimeout(resetBoard, 3000);
+                return;
+            }
+
+            if (checkTie(board)) {
+                document.getElementById('status').innerText = "It's a tie!";
+                gameOn = false;
+                setTimeout(resetBoard, 3000);
+                return;
+            }
+
+            document.getElementById('status').innerText = 'Your turn!';
+        });
+    });
+});
+

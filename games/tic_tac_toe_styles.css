@@ -9,7 +9,7 @@ h1 {
 
 .tic-tac-toe-container {
     background-color: #EEEEEE;
-    height: 600px;
+    height: 700px;
     padding: 30px;
     border: 2px solid black;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -25,7 +25,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(3, 144px);
     grid-template-rows: repeat(3, 144px);
-    gap: 5px;
+    gap: 8px;
     width: max-content;
     margin: 20px auto;
 }
@@ -48,7 +48,7 @@ h1 {
 .reset-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 100px;
+    height: 80px;
     width: 120px;
     margin: 10px;
     padding: 12px;

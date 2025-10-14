@@ -55,7 +55,7 @@ function determineWinner(userChoice, computerChoice) {
         return "You win!";
     } else {
         scores.computer += 1;
-        return "Computer wins!";
+        return "You lose!";
     }
 }
 
@@ -76,8 +76,6 @@ function resetScores() {
 function playGame(userChoice) {
     const computerChoice = getComputerChoice();
     const result = determineWinner(userChoice, computerChoice);
-    displayResult(`You chose ${userChoice}. Computer chose ${computerChoice}. ${result}`);
+    displayResult(`${result}`);
     updateScoreboard();
 }
-
-// playGame();

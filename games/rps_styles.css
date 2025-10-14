@@ -23,7 +23,6 @@ h1 {
 
 .rps-item {
     background-color: #EEEEEE;
-    border: 2px solid black;
     height: 196px;
     width: 450px;
     display:flex;
@@ -91,20 +90,11 @@ h1 {
 
 .banner {
     background-color: lavender;
-    font-size: 24px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 36px;
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
     display:flex;
     justify-content: space-around;
 }
-
-/* .scoreboard-banner {
-    background-color: lightcyan;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-    display:flex;
-    justify-content: space-around;
-} */

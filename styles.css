@@ -14,12 +14,35 @@
     background-color: #EEEEEE;
     border: 2px solid black;
     height: 256px;
+    width: 128px;
     flex: 1;
-    margin: 4px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
     text-align: center;
-
 }
 
+.game-item:hover {
+    background-color: #CCCCCC;
+    transform: rotate(5deg) scale(1.05);
+    transform-origin: center;
+}
+
+@media (max-width: 600px) {
+    .game-menu {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .game-item {
+        margin: 8px 0;
+        width: 100%;
+        font-size: 1.2rem;
+        padding: 16px;
+    }
+    
+}
 
 h1 {
     background-color:beige;

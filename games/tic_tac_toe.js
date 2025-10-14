@@ -18,6 +18,9 @@ let board = ['', '', '',
 let playerPiece = whoGoesFirst();
 let computerPiece = playerPiece === 'X' ? 'O' : 'X';
 let gameOn = false;
+let scores = { user: 0, computer: 0, ties: 0 };
+updateScoreboard();
+document.getElementById('status').innerText = `You are ${playerPiece}. Click "Start Game" to begin!`;
 
 function startGame() {
     gameOn = true;
@@ -27,6 +30,20 @@ function whoGoesFirst() {
     const choices = ['X', 'O'];
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
+}
+
+function updateScoreboard() {
+    const userScoreDiv = document.getElementById('user-score');
+    const computerScoreDiv = document.getElementById('computer-score');
+    const tiesScoreDiv = document.getElementById('ties-score');
+    userScoreDiv.innerText = scores.user;
+    computerScoreDiv.innerText = scores.computer;
+    tiesScoreDiv.innerText = scores.ties;
+}
+
+function resetScores() {
+    scores = { user: 0, computer: 0, ties: 0 };
+    updateScoreboard();
 }
 
 function computerMove(board, computerPiece) {
@@ -80,7 +97,9 @@ function resetBoard() {
 document.getElementById('start-button').addEventListener('click', () => {
     if (!gameOn) {
         startGame();
+        // player moves first if X
         document.getElementById('status').innerText = `You are ${playerPiece}. ${playerPiece === 'X' ? "Your turn!" : "Computer's turn!"}`;
+        // computer moves first if X
         if (computerPiece === 'X') {
             computerMove(board, computerPiece);
             document.getElementById('status').innerText = `You are ${playerPiece}. Your turn!`;
@@ -136,3 +155,5 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
     });
 });
 
+document.getElementById('reset-scores').addEventListener('click', resetScores);
+document.getElementById('reset-board').addEventListener('click', resetBoard);

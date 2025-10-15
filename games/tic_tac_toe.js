@@ -114,8 +114,8 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
         if (board[cellIndex] !== '') return; // cell already taken
 
         // player's move
-        board[cellIndex] = '<img src="./tic_tac_toe_pics/${playerPiece}_icon.png" alt="${playerPiece} Icon" height="128" width="128" class="icon">';
-        cell.innerText = playerPiece;
+        board[cellIndex] = playerPiece;
+        cell.innerText = '<img src="./tic_tac_toe_pics/${playerPiece}_icon.png" alt="${playerPiece} Icon" height="128" width="128" class="icon">';
 
         if (checkWin(board, playerPiece)) {
             document.getElementById('status').innerText = 'You win!';

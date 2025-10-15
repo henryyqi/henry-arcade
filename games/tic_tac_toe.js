@@ -23,6 +23,7 @@ updateScoreboard();
 document.getElementById('status').innerText = `You are ${playerPiece}. Click "Start Game" to begin!`;
 
 function startGame() {
+    resetBoard();
     gameOn = true;
 }
 
@@ -59,7 +60,7 @@ function computerMove(board, computerPiece) {
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     const move = emptyCells[randomIndex];
     board[move] = computerPiece;
-    document.getElementById(`cell-${move}`).innerText = '<img src="./tic_tac_toe_pics/${computerPiece}_icon.png" alt="${computerPiece} Icon" height="128" width="128" class="icon">';
+    document.getElementById(`cell-${move}`).innerHTML = `<img src="./tic_tac_toe_pics/${computerPiece}_icon.png" alt="${computerPiece} Icon" height="128" width="128" class="icon">`;
 }
 
 function checkWin(board, piece) {
@@ -115,7 +116,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
         // player's move
         board[cellIndex] = playerPiece;
-        cell.innerText = '<img src="./tic_tac_toe_pics/${playerPiece}_icon.png" alt="${playerPiece} Icon" height="128" width="128" class="icon">';
+        cell.innerHTML = `<img src="./tic_tac_toe_pics/${playerPiece}_icon.png" alt="${playerPiece} Icon" height="128" width="128" class="icon">`;
 
         if (checkWin(board, playerPiece)) {
             document.getElementById('status').innerText = 'You win!';
@@ -133,7 +134,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
         // computer's move
         document.getElementById('status').innerText = "Computer's turn!";
-        setTimeout(() => {1000}, () => {
+        setTimeout(() => {
             computerMove(board, computerPiece);
 
             if (checkWin(board, computerPiece)) {

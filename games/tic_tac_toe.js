@@ -116,6 +116,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
         if (checkWin(board, playerPiece)) {
             document.getElementById('status').innerText = 'You win!';
+            scores.user += 1;
             gameOn = false;
             setTimeout(resetBoard, 3000);
             return;
@@ -123,6 +124,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
         if (checkTie(board)) {
             document.getElementById('status').innerText = "It's a tie!";
+            scores.ties += 1;
             gameOn = false;
             setTimeout(resetBoard, 3000);
             return;
@@ -135,6 +137,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
             if (checkWin(board, computerPiece)) {
                 document.getElementById('status').innerText = 'Computer wins!';
+                scores.computer += 1;
                 gameOn = false;
                 setTimeout(resetBoard, 3000);
                 return;
@@ -142,6 +145,7 @@ document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
 
             if (checkTie(board)) {
                 document.getElementById('status').innerText = "It's a tie!";
+                scores.ties += 1;
                 gameOn = false;
                 setTimeout(resetBoard, 3000);
                 return;

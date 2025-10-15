@@ -35,12 +35,8 @@ function whoGoesFirst() {
 }
 
 function updateScoreboard() {
-    const userScoreDiv = document.getElementById('user-score');
-    const computerScoreDiv = document.getElementById('computer-score');
-    const tiesScoreDiv = document.getElementById('ties-score');
-    userScoreDiv.innerText = scores.user;
-    computerScoreDiv.innerText = scores.computer;
-    tiesScoreDiv.innerText = scores.ties;
+    const scoreboardDiv = document.getElementById('scoreboard');
+    scoreboardDiv.innerText = `|  User: ${scores.user}   |   Computer: ${scores.computer}   |   Ties: ${scores.ties}  |`;
 }
 
 function resetScores() {
@@ -92,7 +88,6 @@ function resetBoard() {
     }
     playerPiece = whoGoesFirst();
     computerPiece = playerPiece === 'X' ? 'O' : 'X';
-    gameOn = false;
     document.getElementById('status').innerText = `You are ${playerPiece}. Click "Start Game" to begin!`;
 }
 

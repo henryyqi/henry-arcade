@@ -10,16 +10,16 @@ const layout = [
     1,0,1,1,0,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,1,1,0,1,
     1,0,0,0,0,0,0,1,0,1,1,0,0,0,3,0,0,1,1,0,1,0,0,0,0,0,0,1,
     1,1,1,1,1,1,0,0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,1,1,1,1,
+    1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,
     1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,1,1,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,0,0,0,1,2,2,2,2,2,2,1,0,0,0,0,1,1,1,1,1,1,
-    1,3,0,0,0,0,0,1,1,1,1,2,2,2,2,2,2,1,1,1,1,0,0,0,0,0,3,1,
-    1,0,1,1,1,1,0,1,1,1,1,2,2,2,2,2,2,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,2,2,2,2,2,2,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,0,1,1,0,0,0,0,0,3,0,0,0,0,1,1,0,1,1,1,1,1,1,
+    1,1,1,1,1,1,0,1,1,0,1,1,2,2,2,2,1,1,0,1,1,0,1,1,1,1,1,1,
+    1,1,1,1,1,1,0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,1,1,1,1,1,1,
+    1,3,0,0,0,0,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,0,0,0,0,3,1,
+    1,0,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,0,1,
+    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
+    1,0,0,0,0,0,0,1,1,0,0,0,0,0,3,0,0,0,0,1,1,0,0,0,0,0,0,1,
+    1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
     1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,
     1,0,1,0,0,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,1,0,1,
@@ -66,16 +66,23 @@ function resetBoard() {
     squares.forEach(square => square.remove());
     squares.length = 0; // Clear the squares array
     createBoard();
+    // reset timer display and stop running timer
+    stopTimer();
+    timeElapsed = 0;
+    updateTimerDisplay();
 }
 
 // Reset game
 let score = 0;
+let timeElapsed = 0;
+let timerIntervalId = null;
 document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
 document.getElementById('start-button').addEventListener('click', () => {
     // Reset board
     resetBoard();
     // Reset score
     score = 0;
+    timeElapsed = 0;
     document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
     // Remove pacman from current position
     squares[pacmanCurrentIndex].classList.remove('pacman');
@@ -92,6 +99,8 @@ document.getElementById('start-button').addEventListener('click', () => {
     });
     // Re-add event listener
     document.addEventListener('keydown', movePacman);
+    // Start the game timer
+    startTimer();
 });
 
 
@@ -196,10 +205,10 @@ class Ghost {
 
 // All my ghosts
 const ghosts = [
-    new Ghost('crow', 348, 250),
-    new Ghost('seagull', 376, 400),
-    new Ghost('pigeon', 351, 300),
-    new Ghost('hawk', 379, 500)
+    new Ghost('crow', 349, 250),
+    new Ghost('seagull', 405, 400),
+    new Ghost('pigeon', 350, 300),
+    new Ghost('hawk', 408, 500)
 ];
 
 // Draw my ghosts onto the grid
@@ -237,6 +246,11 @@ function moveGhost(ghost) {
             direction = directions[Math.floor(Math.random() * directions.length)];
         }
 
+        // After some time, if the ghost is still in ghost-lair, move it out
+        if (squares[ghost.currentIndex].classList.contains('ghost-lair')) {
+            direction = -width; // Move up out of the lair
+        }
+
         // If the ghost is scared
         if (ghost.isScared) {
             squares[ghost.currentIndex].classList.add('scared-ghost');
@@ -263,6 +277,8 @@ function checkForGameOver() {
         // Stop the ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener('keydown', movePacman);
+        // stop game timer
+        stopTimer();
         setTimeout(function() { alert('Game Over!'); }, 500);
     }
 }
@@ -273,7 +289,31 @@ function checkForWin() {
         // Stop the ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener('keydown', movePacman);
+        // stop timer when player wins
+        stopTimer();
         setTimeout(function() { alert('You have WON!'); }, 500);
+    }
+}
+
+// Timer functions
+function updateTimerDisplay() {
+    const timerEl = document.getElementById('timer');
+    if (timerEl) timerEl.textContent = `Time: ${timeElapsed}s`;
+}
+
+function startTimer() {
+    // avoid multiple intervals
+    if (timerIntervalId) return;
+    timerIntervalId = setInterval(() => {
+        timeElapsed += 1;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerIntervalId) {
+        clearInterval(timerIntervalId);
+        timerIntervalId = null;
     }
 }
 

@@ -9,7 +9,7 @@ h1 {
 
 .pacman-container {
     background-color: #EEEEEE;
-    height: 700px;
+    height: 725px;
     padding: 10px;
     border: 2px solid black;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -45,7 +45,7 @@ h1 {
 
 .pac-dot {
     background-color: white;
-    border-radius: 50%;
+    border-radius: 30%;
     width: 8px;
     height: 8px;
 }
@@ -56,21 +56,21 @@ h1 {
 
 .power-pellet {
     background-color: orange;
-    border-radius: 50%;
+    border-radius: 20%;
     width: 12px;
     height: 12px;
 }
 
 .pacman {
     background-color: yellow;
-    border-radius: 50%;
+    border-radius: 10%;
     width: 16px;
     height: 16px;
 }
 
 .ghost {
     background-color: red;
-    border-radius: 50%;
+    border-radius: 10%;
     width: 16px;
     height: 16px;
 }

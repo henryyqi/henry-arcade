@@ -56,6 +56,39 @@ function createBoard() {
 
 createBoard();
 
+function resetBoard() {
+    squares.forEach(square => square.remove());
+    squares.length = 0; // Clear the squares array
+    createBoard();
+}
+
+// Reset game
+let score = 0;
+document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
+document.getElementById('start-button').addEventListener('click', () => {
+    // Reset board
+    resetBoard();
+    // Reset score
+    score = 0;
+    document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
+    // Remove pacman from current position
+    squares[pacmanCurrentIndex].classList.remove('pacman');
+    // Reset pacman position
+    pacmanCurrentIndex = 490;
+    squares[pacmanCurrentIndex].classList.add('pacman');
+    // Remove all ghosts
+    ghosts.forEach(ghost => {
+        squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+        clearInterval(ghost.timerId);
+        ghost.currentIndex = ghost.startIndex;
+        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+        moveGhost(ghost);
+    });
+    // Re-add event listener
+    document.addEventListener('keydown', movePacman);
+});
+
+
 // Starting position of pacman
 let pacmanCurrentIndex = 490;
 squares[pacmanCurrentIndex].classList.add('pacman');
@@ -133,7 +166,7 @@ function powerPelletEaten() {
         squares[pacmanCurrentIndex].classList.remove('power-pellet');
         score +=10;
         ghosts.forEach(ghost => ghost.isScared = true);
-        setTimeout(unScareGhosts, 10000);
+        setTimeout(unScareGhosts, 5000);
         document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
     }
 }
@@ -143,14 +176,14 @@ function unScareGhosts() {
     ghosts.forEach(ghost => ghost.isScared = false);
 }
 
-// Create our Ghost template
+// Create Ghost class template
 class Ghost {
     constructor(className, startIndex, speed) {
         this.className = className;
         this.startIndex = startIndex;
         this.speed = speed;
         this.currentIndex = startIndex;
-        this.timerId = NaNN;
+        this.timerId = null;
         this.isScared = false;
     }
 }
@@ -175,6 +208,8 @@ ghosts.forEach(ghost => moveGhost(ghost));
 function moveGhost(ghost) {
     const directions = [-1, +1, -width, +width];
     let direction = directions[Math.floor(Math.random() * directions.length)];
+
+    if (ghost.timerId) clearInterval(ghost.timerId);
 
     ghost.timerId = setInterval(function() {
         // If the next square does NOT contain a wall and a ghost, you can go there
@@ -236,26 +271,3 @@ function checkForWin() {
     }
 }
 
-// Reset game
-let score = 0;
-document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
-document.getElementById('start-button').addEventListener('click', () => {
-    // Reset score
-    score = 0;
-    document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
-    // Remove pacman from current position
-    squares[pacmanCurrentIndex].classList.remove('pacman');
-    // Reset pacman position
-    pacmanCurrentIndex = 490;
-    squares[pacmanCurrentIndex].classList.add('pacman');
-    // Remove all ghosts
-    ghosts.forEach(ghost => {
-        squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
-        clearInterval(ghost.timerId);
-        ghost.currentIndex = ghost.startIndex;
-        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
-        moveGhost(ghost);
-    });
-    // Re-add event listener
-    document.addEventListener('keydown', movePacman);
-});

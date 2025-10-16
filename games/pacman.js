@@ -36,9 +36,13 @@ const squares = [];
 // Draw the grid
 
 function createBoard() {
+    // Using a DocumentFragment to minimize reflows when adding many squares
+    const fragment = document.createDocumentFragment();
     for (let i = 0; i < layout.length; i++) {
         const square = document.createElement('div');
-        grid.appendChild(square);
+        // give every square the sizing/box styles
+        square.classList.add('square');
+        fragment.appendChild(square);
         squares.push(square);
 
         // Add layout to the board
@@ -52,6 +56,7 @@ function createBoard() {
             squares[i].classList.add('power-pellet');
         }
     }
+    grid.appendChild(fragment);
     console.log('layout length:',layout.length);
 }
 

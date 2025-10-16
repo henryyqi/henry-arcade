@@ -21,19 +21,22 @@ h1 {
 }
 
 .pacman-grid {
-    display: flex;
-    flex-wrap: wrap;
-    width: 560px;
-    height: 560px;
+    display: grid;
+    /* 28 columns of 20px each */
+    grid-template-columns: repeat(28, 20px);
+    grid-auto-rows: 20px;
+    gap: 0; /* borders on .square will show the cell boundaries */
+    width: calc(28 * 20px);
+    height: calc(28 * 20px);
     border: 2px solid yellow;
 }
 
 .square {
-    height: 20px;
-    width: 20px;
     background-color: black;
     border: 1px solid yellow;
     box-sizing: border-box;
+    width: 100%;
+    height: 100%;
 }
 
 .wall {

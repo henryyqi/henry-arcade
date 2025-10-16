@@ -25,6 +25,7 @@ h1 {
     /* 28 columns of 20px each */
     grid-template-columns: repeat(28, 20px);
     grid-auto-rows: 20px;
+    place-items: center;
     gap: 0; /* borders on .square will show the cell boundaries */
     width: calc(28 * 20px);
     height: calc(28 * 20px);
@@ -45,7 +46,7 @@ h1 {
 
 .pac-dot {
     background-color: white;
-    border-radius: 30%;
+    border-radius: 50%;
     width: 8px;
     height: 8px;
 }
@@ -56,21 +57,21 @@ h1 {
 
 .power-pellet {
     background-color: orange;
-    border-radius: 20%;
+    border-radius: 50%;
     width: 12px;
     height: 12px;
 }
 
 .pacman {
     background-color: yellow;
-    border-radius: 10%;
+    border-radius: 50%;
     width: 16px;
     height: 16px;
 }
 
 .ghost {
     background-color: red;
-    border-radius: 10%;
+    border-radius: 50%;
     width: 16px;
     height: 16px;
 }

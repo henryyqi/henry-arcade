@@ -205,10 +205,10 @@ class Ghost {
 
 // All my ghosts
 const ghosts = [
-    new Ghost('crow', 349, 250),
-    new Ghost('seagull', 405, 400),
-    new Ghost('pigeon', 350, 300),
-    new Ghost('hawk', 408, 500)
+    new Ghost('crow', 348, 250),
+    new Ghost('seagull', 404, 400),
+    new Ghost('pigeon', 351, 300),
+    new Ghost('hawk', 406, 500)
 ];
 
 // Draw my ghosts onto the grid
@@ -238,6 +238,21 @@ function moveGhost(ghost) {
             squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
             // Change the current index to the new safe square
             ghost.currentIndex += direction;
+            // Redraw the ghost in the new safe space
+            squares[ghost.currentIndex].classList.add(ghost.className);
+            squares[ghost.currentIndex].classList.add('ghost');
+        } else if (
+            ghost.currentIndex + direction === 307 ||
+            ghost.currentIndex + direction === 337
+        ){
+            if ((ghost.currentIndex -1) === 307) {
+                ghost.currentIndex = 336;
+            } else if ((ghost.currentIndex +1) === 337) {
+                ghost.currentIndex = 308;
+            }
+            // Remove all ghost related classes
+            squares[ghost.currentIndex].classList.remove(ghost.className);
+            squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
             // Redraw the ghost in the new safe space
             squares[ghost.currentIndex].classList.add(ghost.className);
             squares[ghost.currentIndex].classList.add('ghost');

@@ -1,16 +1,16 @@
 h1 {
     background-color:beige;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: bold;
     text-align: center;
     left: 50%;
-    padding: 10px;
+    padding: 5px;
 }
 
 .pacman-container {
     background-color: #EEEEEE;
     height: 700px;
-    padding: 20px;
+    padding: 10px;
     border: 2px solid black;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
@@ -29,8 +29,8 @@ h1 {
 }
 
 .square {
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     background-color: black;
     border: 1px solid yellow;
     /* box-sizing: border-box; */
@@ -45,6 +45,17 @@ h1 {
     border-radius: 50%;
     /* width: 4px; */
     /* height: 4px; */
+}
+
+.ghost-lair {
+    background-color: pink;
+}
+
+.power-pellet {
+    background-color: orange;
+    border-radius: 50%;
+    /* width: 8px; */
+    /* height: 8px; */
 }
 
 .pacman {

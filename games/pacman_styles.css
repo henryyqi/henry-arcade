@@ -46,8 +46,8 @@ h1 {
 .pac-dot {
     background-color: white;
     border-radius: 50%;
-    /* width: 4px; */
-    /* height: 4px; */
+    width: 8px;
+    height: 8px;
 }
 
 .ghost-lair {
@@ -57,15 +57,22 @@ h1 {
 .power-pellet {
     background-color: orange;
     border-radius: 50%;
-    /* width: 8px; */
-    /* height: 8px; */
+    width: 12px;
+    height: 12px;
 }
 
 .pacman {
     background-color: yellow;
     border-radius: 50%;
-    /* width: 8px; */
-    /* height: 8px; */
+    width: 16px;
+    height: 16px;
+}
+
+.ghost {
+    background-color: red;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
 }
 
 .reset-button {
@@ -107,10 +114,10 @@ h1 {
 .banner {
     background-color: #EEEEEE;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 36px;
+    font-size: 28px;
     font-weight: bold;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 8px;
     display:flex;
     justify-content: space-around;
 }
@@ -120,5 +127,5 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }

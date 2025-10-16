@@ -80,7 +80,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Remove pacman from current position
     squares[pacmanCurrentIndex].classList.remove('pacman');
     // Reset pacman position
-    pacmanCurrentIndex = 490;
+    pacmanCurrentIndex = 729;
     squares[pacmanCurrentIndex].classList.add('pacman');
     // Remove all ghosts
     ghosts.forEach(ghost => {
@@ -96,7 +96,7 @@ document.getElementById('start-button').addEventListener('click', () => {
 
 
 // Starting position of pacman
-let pacmanCurrentIndex = 490;
+let pacmanCurrentIndex = 729;
 squares[pacmanCurrentIndex].classList.add('pacman');
 
 // Move Pacman
@@ -113,8 +113,8 @@ function movePacman(e) {
             pacmanCurrentIndex -=1;
 
             // check if pacman is in the left exit
-            if ((pacmanCurrentIndex -1) === 363) {
-                pacmanCurrentIndex = 391;
+            if ((pacmanCurrentIndex -1) === 308) {
+                pacmanCurrentIndex = 336;
             }
             break;
         case 'ArrowUp':
@@ -134,8 +134,8 @@ function movePacman(e) {
             pacmanCurrentIndex +=1;
 
             // check if pacman is in the right exit
-            if ((pacmanCurrentIndex +1) === 392) {
-                pacmanCurrentIndex = 364;
+            if ((pacmanCurrentIndex +1) === 336) {
+                pacmanCurrentIndex = 308;
             }
             break;
         case 'ArrowDown':
@@ -198,7 +198,7 @@ class Ghost {
 const ghosts = [
     new Ghost('crow', 348, 250),
     new Ghost('seagull', 376, 400),
-    new Ghost('pidgeon', 351, 300),
+    new Ghost('pigeon', 351, 300),
     new Ghost('hawk', 379, 500)
 ];
 

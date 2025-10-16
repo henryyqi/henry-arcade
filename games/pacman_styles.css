@@ -9,7 +9,7 @@ h1 {
 
 .pacman-container {
     background-color: #EEEEEE;
-    height: 750px;
+    height: 600px;
     padding: 30px;
     border: 2px solid black;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -23,7 +23,6 @@ h1 {
 .pacman-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
     width: 280px;
     height: 280px;
     border: 2px solid yellow;

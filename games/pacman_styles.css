@@ -74,6 +74,10 @@
 }
 
 .power-pellet {
+    background-image: url('pacman_pics/fries.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: orange;
     border-radius: 50%;
     width: 12px;
@@ -81,6 +85,10 @@
 }
 
 .pacman {
+    background-image: url('pacman_pics/ali_egg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: yellow;
     border-radius: 50%;
     width: 16px;
@@ -88,6 +96,10 @@
 }
 
 .ghost {
+    background-image: url('pacman_pics/crow.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: red;
     border-radius: 50%;
     width: 16px;

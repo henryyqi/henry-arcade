@@ -15,9 +15,9 @@ const layout = [
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     1,1,1,1,1,1,0,1,1,0,1,1,2,2,2,2,1,1,0,1,1,0,1,1,1,1,1,1,
     1,1,1,1,1,1,0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,1,1,1,1,1,1,
-    1,3,0,0,0,0,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,0,0,0,0,3,1,
+    1,3,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,3,1,
     1,0,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
+    1,0,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,0,1,
     1,0,0,0,0,0,0,1,1,0,0,0,0,0,3,0,0,0,0,1,1,0,0,0,0,0,0,1,
     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
@@ -206,10 +206,10 @@ class Ghost {
 
 // All my ghosts
 const ghosts = [
-    new Ghost('crow', 348, 250),
-    new Ghost('seagull', 404, 400),
-    new Ghost('pigeon', 351, 300),
-    new Ghost('hawk', 407, 500)
+    new Ghost('crow', 376, 250),
+    new Ghost('seagull', 432, 400),
+    new Ghost('pigeon', 379, 300),
+    new Ghost('hawk', 435, 500)
 ];
 
 // Draw my ghosts onto the grid
@@ -268,11 +268,6 @@ function moveGhost(ghost) {
         } else {
             // Find a new direction to try
             direction = directions[Math.floor(Math.random() * directions.length)];
-        }
-
-        // After some time, if the ghost is still in ghost-lair, move it out
-        if (squares[ghost.currentIndex].classList.contains('ghost-lair')) {
-            direction = -width; // Move up out of the lair
         }
 
         // If the ghost is scared

@@ -9,7 +9,7 @@ h1 {
 
 .pacman-container {
     background-color: #EEEEEE;
-    height: 725px;
+    height: 700px;
     padding: 5px;
     border: 2px solid black;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -79,12 +79,12 @@ h1 {
 .reset-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 40px;
+    height: 32px;
     width: 120px;
     margin: 5px;
     padding: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
@@ -92,12 +92,12 @@ h1 {
 .start-button {
     background-color: #DDDDDD;
     border: 2px solid black;
-    height: 40px;
+    height: 32px;
     width: 120px;
     margin: 5px;
     padding: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
@@ -115,10 +115,10 @@ h1 {
 .banner {
     background-color: #EEEEEE;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
-    margin-top: 6px;
+    margin-top: 4px;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -137,7 +137,7 @@ h1 {
 .banner-item {
     background-color: #EEEEEE;
     border: 2px solid transparent;
-    padding: 6px 12px;
+    padding: 6px 6px;
     font-size: 18px;
     font-weight: bold;
 }

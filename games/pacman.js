@@ -2,12 +2,12 @@ const grid = document.querySelector('.pacman-grid');
 const width = 28 // 28 x 28 = 784 squares
 const layout = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    1,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0,1,
-    1,0,1,1,0,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,1,1,0,1,
+    1,0,1,1,3,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,3,1,1,0,1,
     1,0,1,1,0,1,1,1,0,1,1,0,0,0,3,0,0,1,1,0,1,1,1,0,1,1,0,1,
     1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,
@@ -27,7 +27,7 @@ const layout = [
     1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,1,
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
 // exits are at index numbers 308 and 355
@@ -88,7 +88,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Remove pacman from current position
     squares[pacmanCurrentIndex].classList.remove('pacman');
     // Reset pacman position
-    pacmanCurrentIndex = 729;
+    pacmanCurrentIndex = 29;
     squares[pacmanCurrentIndex].classList.add('pacman');
     // Remove all ghosts
     ghosts.forEach(ghost => {
@@ -106,7 +106,7 @@ document.getElementById('start-button').addEventListener('click', () => {
 
 
 // Starting position of pacman
-let pacmanCurrentIndex = 729;
+let pacmanCurrentIndex = 29;
 squares[pacmanCurrentIndex].classList.add('pacman');
 
 // Move Pacman

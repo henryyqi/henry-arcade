@@ -63,10 +63,14 @@
 }
 
 .pac-dot {
+    background-image: url('pacman_pics/fries.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: grey;
     border-radius: 50%;
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
 }
 
 .ghost-lair {
@@ -74,14 +78,14 @@
 }
 
 .power-pellet {
-    background-image: url('pacman_pics/fries.jpg');
+    background-image: url('pacman_pics/boba.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-color: orange;
     border-radius: 50%;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
 }
 
 .pacman {
@@ -91,19 +95,19 @@
     background-repeat: no-repeat;
     background-color: yellow;
     border-radius: 50%;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
 
 .ghost {
-    background-image: url('pacman_pics/crow.webp');
+    background-image: url('pacman_pics/crow.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-color: red;
     border-radius: 50%;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
 
 .reset-button {

@@ -1,5 +1,6 @@
 const grid = document.querySelector('.pacman-grid');
 const width = 28 // 28 x 28 = 784 squares
+let scoreTarget = 300;
 let map_id = 0;
 let currentLayout = [];
 let numberOfMaps = 3;   // update this when adding new maps
@@ -478,7 +479,7 @@ function checkForGameOver() {
 
 // Check for win
 function checkForWin() {
-    if (score >= 274) {
+    if (score >= scoreTarget) {
         // Stop the ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener('keydown', movePacman);

@@ -208,7 +208,7 @@ const ghosts = [
     new Ghost('crow', 348, 250),
     new Ghost('seagull', 404, 400),
     new Ghost('pigeon', 351, 300),
-    new Ghost('hawk', 406, 500)
+    new Ghost('hawk', 407, 500)
 ];
 
 // Draw my ghosts onto the grid
@@ -230,7 +230,9 @@ function moveGhost(ghost) {
         // If the next square does NOT contain a wall and a ghost, you can go there
         if (
             !squares[ghost.currentIndex + direction].classList.contains('wall') &&
-            !squares[ghost.currentIndex + direction].classList.contains('ghost')
+            !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
+            !ghost.currentIndex + direction === 307 &&
+            !ghost.currentIndex + direction === 337
         ) {
             // You can go here
             // Remove all ghost related classes
@@ -244,18 +246,24 @@ function moveGhost(ghost) {
         } else if (
             ghost.currentIndex + direction === 307 ||
             ghost.currentIndex + direction === 337
-        ){
+        ) {
             if ((ghost.currentIndex -1) === 307) {
+                // Remove all ghost related classes
+                squares[ghost.currentIndex].classList.remove(ghost.className);
+                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
                 ghost.currentIndex = 336;
+                // Redraw the ghost in the new safe space
+                squares[ghost.currentIndex].classList.add(ghost.className); 
+                squares[ghost.currentIndex].classList.add('ghost');
             } else if ((ghost.currentIndex +1) === 337) {
+                squares[ghost.currentIndex].classList.remove(ghost.className);
+                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
                 ghost.currentIndex = 308;
+                // Redraw the ghost in the new safe space
+                squares[ghost.currentIndex].classList.add(ghost.className); 
+                squares[ghost.currentIndex].classList.add('ghost');
             }
-            // Remove all ghost related classes
-            squares[ghost.currentIndex].classList.remove(ghost.className);
-            squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-            // Redraw the ghost in the new safe space
-            squares[ghost.currentIndex].classList.add(ghost.className);
-            squares[ghost.currentIndex].classList.add('ghost');
+            
         } else {
             // Find a new direction to try
             direction = directions[Math.floor(Math.random() * directions.length)];

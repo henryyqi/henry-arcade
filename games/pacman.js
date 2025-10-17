@@ -133,7 +133,7 @@ const squares = [];
 
 document.getElementById('change-map-button').addEventListener('click', () => {
     map_id += 1;
-    if (map_id > numberOfMaps) {
+    if (map_id > numberOfMaps-1) {
         map_id = 0; // Reset to first map if exceeding available maps
     }
     resetBoard();
@@ -184,9 +184,12 @@ function createBoard() {
     grid.appendChild(fragment);
 }
 
+let gameStarted = false;
 createBoard();
 
 function resetBoard() {
+    gameStarted = false;
+    // Remove all squares from the grid
     squares.forEach(square => square.remove());
     squares.length = 0; // Clear the squares array
     createBoard();
@@ -248,6 +251,7 @@ document.getElementById('start-button').addEventListener('click', () => {
         squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
         moveGhost(ghost);
     });
+    gameStarted = true;
     // Re-add event listener
     document.addEventListener('keydown', movePacman);
     // Start the game timer
@@ -379,7 +383,21 @@ function moveGhost(ghost) {
 
     ghost.timerId = setInterval(function() {
         // If the next square does NOT contain a wall and a ghost, you can go there
-        if (
+        if (!gameStarted) {
+            // Game has not started, ghosts can't leave lair
+            if (squares[ghost.currentIndex + direction].classList.contains('ghost-lair')) {
+                // you can move there
+                // Remove all ghost related classes
+                squares[ghost.currentIndex].classList.remove(ghost.className);
+                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
+                // Change the current index to the new safe square
+                ghost.currentIndex += direction;
+                // Redraw the ghost in the new safe space
+                squares[ghost.currentIndex].classList.add(ghost.className);
+                squares[ghost.currentIndex].classList.add('ghost');
+            }
+
+        } else if (
             !squares[ghost.currentIndex + direction].classList.contains('wall') &&
             !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
             ghost.currentIndex + direction != 307 &&
@@ -453,6 +471,7 @@ function checkForGameOver() {
         document.removeEventListener('keydown', movePacman);
         // stop game timer
         stopTimer();
+        gameStarted = false;
         setTimeout(function() { alert('Game Over!'); }, 500);
     }
 }
@@ -465,6 +484,7 @@ function checkForWin() {
         document.removeEventListener('keydown', movePacman);
         // stop timer when player wins
         stopTimer();
+        gameStarted = false;
         setTimeout(function() { alert('You have WON!'); }, 500);
     }
 }

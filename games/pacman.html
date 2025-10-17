@@ -10,24 +10,35 @@
         <a href="../index.html">Home</a>
         <!-- <h1>Pac-Man</h1> -->
 
-        <div class="pacman-container">
-            <div class="banner"></div>
-                <!-- <div id="result" class="banner"></div> -->
-                <div id="status" class="banner">Welcome to Pac-Man! Press Start Game to begin!</div>
-            <div class="banner"></div>
-            <div class="info-row">
-                <div id="scoreboard" class="banner-item">Score: 0</div>
-                <div id="timer" class="banner-item">Time: 0s</div>
+        <div class="full-container">
+            <div class="menu-container">
+                <div class="banner"></div>
+                    <h2>Pac-Man</h2>
+                    <p>Use arrow keys to move Pac-Man</p>
+                    <p>Eat all the dots while avoiding the ghosts!</p>
+                <div class="button-container">
+                    <button id="start-button" class="start-button">Start Game</button>
+                    <button id="reset-board" class="reset-button">Reset Board</button>
+                    <button id="map-selection" class="map-selection-button">Change Map</button>
+                </div>
             </div>
+            
+            <div class="pacman-container">
+                <div class="banner"></div>
+                    <!-- <div id="result" class="banner"></div> -->
+                    <div id="status" class="banner">Welcome to Pac-Man! Press Start Game to begin!</div>
+                <div class="banner"></div>
+                <div class="info-row">
+                    <div id="scoreboard" class="banner-item">Score: 0</div>
+                    <div id="timer" class="banner-item">Time: 0s</div>
+                </div>
 
-            <div class="pacman-grid"></div>
+                <div class="pacman-grid"></div>
 
-            <div class="button-container">
-                <button id="start-button" class="start-button">Start Game</button>
-                <button id="reset-board" class="reset-button">Reset Board</button>
-                <button id="difficulty" class="difficulty-button">Change Difficulty</button>
+                
             </div>
         </div>
+        
         
         
         <!-- todo:

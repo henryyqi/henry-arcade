@@ -1,6 +1,8 @@
 const grid = document.querySelector('.pacman-grid');
 const width = 28 // 28 x 28 = 784 squares
-const layout = [
+const map_id = 0;
+const currentLayout = [];
+const layoutlevelZero = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
@@ -29,17 +31,103 @@ const layout = [
     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+    // exits at index numbers 308 and 355
 ];
-// exits are at index numbers 308 and 355
+// const layoutLevelOne = [
+//     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+//     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+//     1,0,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0,1,
+//     1,0,1,1,3,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,3,1,1,0,1,
+//     1,0,1,1,0,1,1,1,0,1,1,0,0,0,3,0,0,1,1,0,1,1,1,0,1,1,0,1,
+//     1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,
+//     1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,
+//     1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,
+//     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//     1,1,1,1,1,1,0,1,1,0,1,1,2,2,2,2,1,1,0,1,1,0,1,1,1,1,1,1,
+//     1,1,1,1,1,1,0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,1,1,1,1,1,1,
+//     1,3,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,3,1,
+//     1,0,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,0,0,0,1,1,0,0,0,0,0,3,0,0,0,0,1,1,0,0,0,0,0,0,1,
+//     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
+//     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
+//     1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,
+//     1,0,1,0,0,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,1,0,1,
+//     1,0,1,0,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1,
+//     1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
+//     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+//     // exits at index numbers 308 and 355
+// ];
+
+// const layoutLevelTwo = [
+//     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+//     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+//     1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,
+//     1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,
+//     1,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,1,
+//     1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1,
+//     1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,
+//     1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,
+//     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//     1,1,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,1,1,
+//     1,1,1,1,1,1,0,1,1,1,1,1,2,2,2,2,1,1,1,1,1,0,1,1,1,1,1,1,
+//     1,3,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,0,0,0,0,3,0,0,0,0,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,0,0,1,
+//     1,0,1,0,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,0,1,0,1,
+//     1,0,1,0,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,0,1,0,1,
+//     1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,0,0,0,0,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,1,1,1,1,0,1,1,0,1,1,2,2,2,2,1,1,0,1,1,0,1,1,1,1,0,1,
+//     1,0,0,0,0,0,0,0,0,0,1,1,2,2,2,2,1,1,0,0,0,0,0,0,0,0,0,1,
+//     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+// ];
 
 const squares = [];
 
-// Draw the grid
+document.getElementById('map-selection-button').addEventListener('click', () => {
+    map_id += 1;
+    if (map_id > 3) {
+        map_id = 0; // Reset to first map if exceeding available maps
+    }
+    resetBoard();
+});
 
+// Get layout based on map_id
+
+function getLayout(map_id) {
+    switch(map_id) {
+        case 0:
+            return layoutlevelZero;
+        // case 1:
+        //     return layoutLevelOne;
+        // case 2:
+        //     return layoutLevelTwo;
+        default:
+            return layoutlevelZero;
+    }
+}
+
+
+// Draw the grid
 function createBoard() {
+    currentLayout = getLayout(map_id);
     // Using a DocumentFragment to minimize reflows when adding many squares
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < layout.length; i++) {
+    for (let i = 0; i < currentLayout.length; i++) {
         const square = document.createElement('div');
         // give every square the sizing/box styles
         square.classList.add('square');
@@ -47,18 +135,17 @@ function createBoard() {
         squares.push(square);
 
         // Add layout to the board
-        if(layout[i] === 0) {
+        if(currentLayout[i] === 0) {
             squares[i].classList.add('pac-dot');
-        } else if (layout[i] === 1) {
+        } else if (currentLayout[i] === 1) {
             squares[i].classList.add('wall');
-        } else if (layout[i] === 2) {
+        } else if (currentLayout[i] === 2) {
             squares[i].classList.add('ghost-lair');
-        } else if (layout[i] === 3) {
+        } else if (currentLayout[i] === 3) {
             squares[i].classList.add('power-pellet');
         }
     }
     grid.appendChild(fragment);
-    // console.log('layout length:',layout.length);
 }
 
 createBoard();
@@ -78,6 +165,32 @@ let score = 0;
 let timeElapsed = 0;
 let timerIntervalId = null;
 document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
+document.getElementById('reset-button').addEventListener('click', () => {
+    // Reset board
+    resetBoard();
+    // Reset score
+    score = 0;
+    timeElapsed = 0;
+    document.getElementById('status').innerHTML = '';
+    document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
+    // Remove pacman from current position
+    squares[pacmanCurrentIndex].classList.remove('pacman');
+    // Reset pacman position
+    pacmanCurrentIndex = 29;
+    squares[pacmanCurrentIndex].classList.add('pacman');
+    // Remove all ghosts
+    ghosts.forEach(ghost => {
+        squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+        clearInterval(ghost.timerId);
+        ghost.currentIndex = ghost.startIndex;
+        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+        moveGhost(ghost);
+    });
+    // Re-add event listener
+    document.addEventListener('keydown', movePacman);
+    // Stop the game timer
+    stopTimer();
+});
 document.getElementById('start-button').addEventListener('click', () => {
     // Reset board
     resetBoard();
@@ -305,7 +418,7 @@ function checkForGameOver() {
 
 // Check for win
 function checkForWin() {
-    if (score === 274) {
+    if (score >= 274) {
         // Stop the ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener('keydown', movePacman);

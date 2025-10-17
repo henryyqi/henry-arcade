@@ -8,8 +8,8 @@ const layout = [
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0,1,
     1,0,1,1,0,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,1,1,0,1,
-    1,0,0,0,0,0,0,1,0,1,1,0,0,0,3,0,0,1,1,0,1,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,0,0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,1,1,1,1,1,1,
+    1,0,1,1,0,1,1,1,0,1,1,0,0,0,3,0,0,1,1,0,1,1,1,0,1,1,0,1,
+    1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,
     1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -232,8 +232,8 @@ function moveGhost(ghost) {
         if (
             !squares[ghost.currentIndex + direction].classList.contains('wall') &&
             !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
-            !ghost.currentIndex + direction === 307 &&
-            !ghost.currentIndex + direction === 336
+            ghost.currentIndex + direction != 307 &&
+            ghost.currentIndex + direction != 336
         ) {
             // You can go here
             // Remove all ghost related classes

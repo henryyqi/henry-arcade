@@ -377,76 +377,161 @@ ghosts.forEach(ghost => {
 ghosts.forEach(ghost => moveGhost(ghost));
 
 function moveGhost(ghost) {
+    // BFS helper: find next step from start towards target avoiding walls
+    function bfsNextStep(startIdx, targetIdx) {
+        if (startIdx === targetIdx) return startIdx;
+        const max = width * width;
+        const queue = [startIdx];
+        const visited = new Uint8Array(max);
+        const prev = new Int32Array(max).fill(-1);
+        visited[startIdx] = 1;
+
+        while (queue.length) {
+            const node = queue.shift();
+            const neighbors = [];
+            // left
+            if (node % width !== 0) neighbors.push(node - 1);
+            // right
+            if (node % width < width - 1) neighbors.push(node + 1);
+            // up
+            if (node - width >= 0) neighbors.push(node - width);
+            // down
+            if (node + width < max) neighbors.push(node + width);
+
+            for (const nb of neighbors) {
+                if (visited[nb]) continue;
+                // skip walls
+                if (squares[nb].classList.contains('wall')) continue;
+                // prevent entering ghost-lair unless starting inside it
+                if (squares[nb].classList.contains('ghost-lair') && !squares[startIdx].classList.contains('ghost-lair')) continue;
+                visited[nb] = 1;
+                prev[nb] = node;
+                if (nb === targetIdx) {
+                    // backtrack to find next step
+                    let cur = nb;
+                    let before = nb;
+                    while (prev[cur] !== startIdx) {
+                        cur = prev[cur];
+                        if (cur === -1) break;
+                    }
+                    return cur === -1 ? null : cur;
+                }
+                queue.push(nb);
+            }
+        }
+        return null; // no path
+    }
+
     const directions = [-1, +1, -width, +width];
-    let direction = directions[Math.floor(Math.random() * directions.length)];
 
     if (ghost.timerId) clearInterval(ghost.timerId);
 
     ghost.timerId = setInterval(function() {
-        // If the next square does NOT contain a wall and a ghost, you can go there
-        if (!gameStarted) {
-            // Game has not started, ghosts can't leave lair
-            if (squares[ghost.currentIndex + direction].classList.contains('ghost-lair')) {
-                // you can move there
-                // Remove all ghost related classes
-                squares[ghost.currentIndex].classList.remove(ghost.className);
-                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-                // Change the current index to the new safe square
-                ghost.currentIndex += direction;
-                // Redraw the ghost in the new safe space
-                squares[ghost.currentIndex].classList.add(ghost.className);
-                squares[ghost.currentIndex].classList.add('ghost');
-            }
-
-        } else if (
-            !squares[ghost.currentIndex + direction].classList.contains('wall') &&
-            !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
-            ghost.currentIndex + direction != 307 &&
-            ghost.currentIndex + direction != 336
-        ) {
-            // You can go here
-            // Remove all ghost related classes
-            squares[ghost.currentIndex].classList.remove(ghost.className);
-            squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-            // Change the current index to the new safe square
-            ghost.currentIndex += direction;
-            // Redraw the ghost in the new safe space
-            squares[ghost.currentIndex].classList.add(ghost.className);
-            squares[ghost.currentIndex].classList.add('ghost');
-        } else if (
-            ghost.currentIndex + direction === 307 ||
-            ghost.currentIndex + direction === 336
-        ) {
-            if ((ghost.currentIndex -1) === 307) {
-                // Remove all ghost related classes
-                squares[ghost.currentIndex].classList.remove(ghost.className);
-                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-                ghost.currentIndex = 335;
-                // Redraw the ghost in the new safe space
-                squares[ghost.currentIndex].classList.add(ghost.className); 
-                squares[ghost.currentIndex].classList.add('ghost');
-            } else if ((ghost.currentIndex +1) === 336) {
-                squares[ghost.currentIndex].classList.remove(ghost.className);
-                squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-                ghost.currentIndex = 308;
-                // Redraw the ghost in the new safe space
-                squares[ghost.currentIndex].classList.add(ghost.className); 
-                squares[ghost.currentIndex].classList.add('ghost');
-            }
-            
-        } else {
-            // Find a new direction to try
-            direction = directions[Math.floor(Math.random() * directions.length)];
-        }
-
-        // If the ghost is in ghost lair, make it exit
-        if (squares[ghost.currentIndex].classList.contains('ghost-lair')) {
-            direction = -width; // Move up
-        }
-
-        // If the ghost is scared
+        // If the ghost is scared, use random movement (existing behavior)
         if (ghost.isScared) {
+            // mark scared visual
             squares[ghost.currentIndex].classList.add('scared-ghost');
+            // try a random direction
+            let dir = directions[Math.floor(Math.random() * directions.length)];
+            const candidate = ghost.currentIndex + dir;
+            if (candidate >= 0 && candidate < width * width && !squares[candidate].classList.contains('wall')) {
+                // move
+                // clear previous occupant metadata
+                if (squares[ghost.currentIndex].dataset.occupant === 'cheese') {
+                    delete squares[ghost.currentIndex].dataset.occupant;
+                    if (squares[ghost.currentIndex].dataset.item) {
+                        squares[ghost.currentIndex].setAttribute('aria-label', squares[ghost.currentIndex].dataset.item.replace(/-/g, ' '));
+                    } else {
+                        squares[ghost.currentIndex].removeAttribute('aria-label');
+                    }
+                }
+                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+                ghost.currentIndex = candidate;
+                squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+                squares[ghost.currentIndex].dataset.occupant = 'cheese';
+                squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
+            }
+        } else if (!gameStarted) {
+            // keep ghosts within lair until game starts; allow movement inside lair
+            let dir = directions[Math.floor(Math.random() * directions.length)];
+            const candidate = ghost.currentIndex + dir;
+            if (candidate >= 0 && candidate < width * width && squares[candidate].classList.contains('ghost-lair')) {
+                // clear previous occupant metadata
+                if (squares[ghost.currentIndex].dataset.occupant === 'cheese') {
+                    delete squares[ghost.currentIndex].dataset.occupant;
+                    if (squares[ghost.currentIndex].dataset.item) {
+                        squares[ghost.currentIndex].setAttribute('aria-label', squares[ghost.currentIndex].dataset.item.replace(/-/g, ' '));
+                    } else {
+                        squares[ghost.currentIndex].removeAttribute('aria-label');
+                    }
+                }
+                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+                ghost.currentIndex = candidate;
+                squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+                squares[ghost.currentIndex].dataset.occupant = 'cheese';
+                squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
+            }
+        } else {
+            // gameStarted and ghost not scared: try BFS chase for Pacman
+            const next = bfsNextStep(ghost.currentIndex, pacmanCurrentIndex);
+            if (next !== null && next !== undefined && next !== ghost.currentIndex) {
+                // move along BFS next
+                if (squares[next].classList.contains('wall')) {
+                    // unexpected, fallback to random
+                    const dir = directions[Math.floor(Math.random() * directions.length)];
+                    const candidate = ghost.currentIndex + dir;
+                    if (candidate >= 0 && candidate < width * width && !squares[candidate].classList.contains('wall')) {
+                        // clear previous occupant metadata
+                        if (squares[ghost.currentIndex].dataset.occupant === 'cheese') {
+                            delete squares[ghost.currentIndex].dataset.occupant;
+                            if (squares[ghost.currentIndex].dataset.item) {
+                                squares[ghost.currentIndex].setAttribute('aria-label', squares[ghost.currentIndex].dataset.item.replace(/-/g, ' '));
+                            } else {
+                                squares[ghost.currentIndex].removeAttribute('aria-label');
+                            }
+                        }
+                        squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+                        ghost.currentIndex = candidate;
+                        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+                        squares[ghost.currentIndex].dataset.occupant = 'cheese';
+                        squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
+                    }
+                } else {
+                    // clear previous occupant metadata
+                    if (squares[ghost.currentIndex].dataset.occupant === 'cheese') {
+                        delete squares[ghost.currentIndex].dataset.occupant;
+                        if (squares[ghost.currentIndex].dataset.item) {
+                            squares[ghost.currentIndex].setAttribute('aria-label', squares[ghost.currentIndex].dataset.item.replace(/-/g, ' '));
+                        } else {
+                            squares[ghost.currentIndex].removeAttribute('aria-label');
+                        }
+                    }
+                    squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+                    ghost.currentIndex = next;
+                    squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+                    squares[ghost.currentIndex].dataset.occupant = 'cheese';
+                    squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
+                }
+            } else {
+                // No path found; fallback to random movement
+                const dir = directions[Math.floor(Math.random() * directions.length)];
+                const candidate = ghost.currentIndex + dir;
+                if (candidate >= 0 && candidate < width * width && !squares[candidate].classList.contains('wall')) {
+                    if (squares[ghost.currentIndex].dataset.occupant === 'cheese') {
+                        delete squares[ghost.currentIndex].dataset.occupant;
+                        if (squares[ghost.currentIndex].dataset.item) {
+                            squares[ghost.currentIndex].setAttribute('aria-label', squares[ghost.currentIndex].dataset.item.replace(/-/g, ' '));
+                        } else {
+                            squares[ghost.currentIndex].removeAttribute('aria-label');
+                        }
+                    }
+                    squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+                    ghost.currentIndex = candidate;
+                    squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+                    squares[ghost.currentIndex].dataset.occupant = 'cheese';
+                    squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
+                }
+            }
         }
 
         // If the ghost is scared and pacman is on it
@@ -456,6 +541,8 @@ function moveGhost(ghost) {
             score +=100;
             document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
             squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+            squares[ghost.currentIndex].dataset.occupant = 'cheese';
+            squares[ghost.currentIndex].setAttribute('aria-label', 'Ghost: cheese');
         }
         checkForGameOver();
     }, ghost.speed);

@@ -6,19 +6,22 @@
     justify-content: center;
     height: 650px;
     gap: 20px;
-    padding: 10px;
+    padding: 4;
 }
 
 .menu-container {
     background-color: #EEEEEE;
     height: 625px;
     width: 35%;
-    padding: 30px;
+    padding: 4px;
     border: 2px solid black;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .pacman-container {
@@ -117,6 +120,19 @@
     text-align: center;
 }
 
+.change-map-button {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    height: 32px;
+    width: 150px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .reset-button:hover {
     background-color: #CCCCCC;
     transform: scale(1.05);
@@ -127,10 +143,15 @@
     transform: scale(1.05);
 }
 
+.change-map-button:hover {
+    background-color: #CCCCCC;
+    transform: scale(1.05);
+}
+
 .banner {
     background-color: #EEEEEE;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     text-align: center;
     margin-top: 4px;

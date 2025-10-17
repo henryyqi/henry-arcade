@@ -58,7 +58,7 @@ function createBoard() {
         }
     }
     grid.appendChild(fragment);
-    console.log('layout length:',layout.length);
+    // console.log('layout length:',layout.length);
 }
 
 createBoard();
@@ -84,6 +84,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Reset score
     score = 0;
     timeElapsed = 0;
+    document.getElementById('status').innerHTML = '';
     document.getElementById('scoreboard').innerHTML = `Score: ${score}`;
     // Remove pacman from current position
     squares[pacmanCurrentIndex].classList.remove('pacman');

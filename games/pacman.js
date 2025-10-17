@@ -1,7 +1,7 @@
 const grid = document.querySelector('.pacman-grid');
 const width = 28 // 28 x 28 = 784 squares
-const map_id = 0;
-const currentLayout = [];
+let map_id = 0;
+let currentLayout = [];
 const layoutlevelZero = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -98,7 +98,7 @@ const layoutlevelZero = [
 
 const squares = [];
 
-document.getElementById('map-selection-button').addEventListener('click', () => {
+document.getElementById('change-map-button').addEventListener('click', () => {
     map_id += 1;
     if (map_id > 3) {
         map_id = 0; // Reset to first map if exceeding available maps

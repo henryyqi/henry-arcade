@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Blackjack</title>
+        <link rel="stylesheet" href="./blackjack_styles.css">
+    </head>
+    <body>
+        <a href="../index.html">Home</a>
+
+        <div class="full-container">
+            <div class="menu-container">
+                <div class="banner"></div>
+                    <h2>Blackjack</h2>
+                    <p>Try to get as close to 21 without going over!</p>
+                    <p>Beat the dealer to win!</p>
+                <div class="menu-button-container">
+                    <button id="start-button" class="button">Start Hand</button>
+                    <!-- <button id="reset-button" class="button">Reset Game</button> -->
+                </div>
+            </div>  
+            <div class="blackjack-container">
+                <div class="banner"></div>
+                    <div id="status" class="banner">Welcome to Blackjack! Press Start Hand to begin!</div>
+                
+                <div id="dealer-hand" class="hand-container">
+                    <h3>Dealer's Hand:</h3>
+                    <div class="cards-row"></div>
+                    <div id="dealer-score" class="score-display">Score: 0</div>
+                </div>
+                <div id="player-hand" class="hand-container">
+                    <h3>Your Hand:</h3>
+                    <div class="cards-row"></div>
+                    <div id="player-score" class="score-display">Score: 0</div>
+                </div>
+
+                <div class="action-button-container">
+                    <button id="double-down-button" class="button">Double Down</button>
+                    <button id="split-hand-button" class="button">Split Hand</button>
+                    <button id="hit-button" class="button">Hit</button>
+                    <button id="stand-button" class="button">Stand</button>    
+                </div>
+
+            </div>
+        </div>
+        
+
+        <script src="connect_four.js"></script>
+        <br>
+
+    </body>
+</html>

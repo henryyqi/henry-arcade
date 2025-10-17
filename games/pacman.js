@@ -30,6 +30,7 @@ const layout = [
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
+// exits are at index numbers 308 and 355
 
 const squares = [];
 
@@ -122,8 +123,8 @@ function movePacman(e) {
             pacmanCurrentIndex -=1;
 
             // check if pacman is in the left exit
-            if ((pacmanCurrentIndex -1) === 308) {
-                pacmanCurrentIndex = 336;
+            if ((pacmanCurrentIndex -1) === 307) {
+                pacmanCurrentIndex = 335;
             }
             break;
         case 'ArrowUp':
@@ -232,7 +233,7 @@ function moveGhost(ghost) {
             !squares[ghost.currentIndex + direction].classList.contains('wall') &&
             !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
             !ghost.currentIndex + direction === 307 &&
-            !ghost.currentIndex + direction === 337
+            !ghost.currentIndex + direction === 336
         ) {
             // You can go here
             // Remove all ghost related classes
@@ -245,17 +246,17 @@ function moveGhost(ghost) {
             squares[ghost.currentIndex].classList.add('ghost');
         } else if (
             ghost.currentIndex + direction === 307 ||
-            ghost.currentIndex + direction === 337
+            ghost.currentIndex + direction === 336
         ) {
             if ((ghost.currentIndex -1) === 307) {
                 // Remove all ghost related classes
                 squares[ghost.currentIndex].classList.remove(ghost.className);
                 squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-                ghost.currentIndex = 336;
+                ghost.currentIndex = 335;
                 // Redraw the ghost in the new safe space
                 squares[ghost.currentIndex].classList.add(ghost.className); 
                 squares[ghost.currentIndex].classList.add('ghost');
-            } else if ((ghost.currentIndex +1) === 337) {
+            } else if ((ghost.currentIndex +1) === 336) {
                 squares[ghost.currentIndex].classList.remove(ghost.className);
                 squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
                 ghost.currentIndex = 308;

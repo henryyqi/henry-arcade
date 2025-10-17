@@ -24,9 +24,32 @@ function buildGrid() {
             div.dataset.column = c;
             // click on column should attempt to drop a piece into that column
             div.addEventListener('click', () => onColumnClick(c));
+            // hover preview: highlight the target cell where a piece would fall
+            div.addEventListener('mouseover', () => onColumnHover(c));
+            div.addEventListener('mouseout', () => clearColumnHover(c));
             gridEl.appendChild(div);
             cells.push(div);
         }
+    }
+}
+
+function onColumnHover(col) {
+    if (!gameStarted) return;
+    // find lowest empty row
+    for (let r = ROWS - 1; r >= 0; r--) {
+        if (!state[r][col]) {
+            const idx = r * COLS + col;
+            cells[idx].classList.add('highlight');
+            break;
+        }
+    }
+}
+
+function clearColumnHover(col) {
+    // remove highlight from any cell in this column
+    for (let r = 0; r < ROWS; r++) {
+        const idx = r * COLS + col;
+        cells[idx].classList.remove('highlight');
     }
 }
 

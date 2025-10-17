@@ -3,11 +3,34 @@
     <head>
         <meta charset="UTF-8">
         <title>Connect Four</title>
+        <link rel="stylesheet" href="./connect_four_styles.css">
     </head>
     <body>
+        <a href="../index.html">Home</a>
+
+        <div class="full-container">
+            <div class="menu-container">
+                <div class="banner"></div>
+                    <h2>Connect Four</h2>
+                    <p>Click on a column to drop your piece!</p>
+                    <p>Get four in a row to win!</p>
+                <div class="button-container">
+                    <button id="two-player-button" class="button">Two Player Mode</button>
+                    <button id="vs-computer-button" class="button">Vs Computer Mode</button>
+                    <button id="reset-button" class="button">Reset Game</button>
+                </div>
+            </div>  
+            <div class="connect-four-container">
+                <div class="banner"></div>
+                    <div id="status" class="banner">Welcome to Connect Four! Choose Game Mode (2P or CPU)!</div>
+                
+                <div class="connect-four-grid"></div>
+            </div>
+        </div>
         
 
+        <script src="connect_four.js"></script>
+        <br>
 
-        <a href="../index.html">Home</a>
     </body>
 </html>

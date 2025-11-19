@@ -10,13 +10,19 @@
 
         <div class="full-container">
             <div class="menu-container">
-                <div class="banner"></div>
-                    <h2>Blackjack</h2>
-                    <p>Try to get as close to 21 without going over!</p>
-                    <p>Beat the dealer to win!</p>
+                <div id="description" class="banner"></div>
+                    <h1>Blackjack</h1>
+                    <p>Try to get as close to 21 without going over! Beat the Dealer to win!</p>
+                <div id="player-info-container" class="info-container">
+                    <div id="player-money">Money: $1000</div>
+                    <div id="current-bet">Current Bet: $0</div>
+                </div>
+                <div id="record-container" class="record-container">
+                    <div id="current record">Wins: 0 || Losses: 0 || Pushes: 0 || Win %: 0% || Blackjacks: 0</div>
+                </div>
                 <div class="menu-button-container">
                     <button id="start-button" class="button">Start Hand</button>
-                    <!-- <button id="reset-button" class="button">Reset Game</button> -->
+                    <button id="reset-button" class="button">Reset Game</button>
                 </div>
             </div>  
             <div class="blackjack-container">
@@ -26,26 +32,28 @@
                 <div id="dealer-hand" class="hand-container">
                     <h3>Dealer's Hand:</h3>
                     <div class="cards-row"></div>
-                    <div id="dealer-score" class="score-display">Score: 0</div>
+                    <div id="dealer-hand" class="value-display">Value: 0</div>
                 </div>
                 <div id="player-hand" class="hand-container">
                     <h3>Your Hand:</h3>
                     <div class="cards-row"></div>
-                    <div id="player-score" class="score-display">Score: 0</div>
+                    <div id="player-hand" class="value-display">Value: 0</div>
                 </div>
 
                 <div class="action-button-container">
-                    <button id="double-down-button" class="button">Double Down</button>
-                    <button id="split-hand-button" class="button">Split Hand</button>
                     <button id="hit-button" class="button">Hit</button>
                     <button id="stand-button" class="button">Stand</button>    
+                </div>
+                <div class="action-button-container">
+                    <button id="double-down-button" class="button">Double Down</button>
+                    <button id="split-hand-button" class="button">Split Hand</button>
                 </div>
 
             </div>
         </div>
         
 
-        <script src="connect_four.js"></script>
+        <script src="blackjack.js"></script>
         <br>
 
     </body>

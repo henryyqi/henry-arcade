@@ -54,7 +54,7 @@
 }
 
 .button {
-    background-color: #4CAF50; /* Green */
+    background-color: green; /* Green */
     border: none;
     color: white;
     padding: 10px 24px;
@@ -95,4 +95,46 @@
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+}
+
+.hand-container {
+    background-color: #FFFFFF;
+    border: 2px solid black;
+    height: 220px;
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-container {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    height: auto;
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.record-container {
+    background-color: #DDDDDD;
+    border: 2px solid black;
+    height: auto;
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
 }

@@ -87,6 +87,8 @@ class BlackjackGame {
         // this.deck.shuffle();
         this.playerHand = new Hand();
         this.dealerHand = new Hand();
+        this.playerSplitHand = new Hand(); // for future split functionality
+        this.handIsSplit = false;
         // Settling bets
         this.playerMoney = new PlayerMoney(1000);
         this.betAmount = 10; // default bet amount
@@ -95,8 +97,10 @@ class BlackjackGame {
         this.playerGotBlackjack = false;
         this.dealerGotBlackjack = false;
         this.playerBust = false;
+        this.playerSplitBust = false;
         this.dealerBust = false;
         this.playerWin = false;
+        this.playerSplitWin = false;
         this.isGameOver = true;
         // stats
         this.wins = 0;
@@ -109,11 +113,17 @@ class BlackjackGame {
         this.deck = new Deck();
         this.playerHand = new Hand();
         this.dealerHand = new Hand();
+        this.playerSplitHand = new Hand(); // for future split functionality
+        this.handIsSplit = false;
+        // Reset game state variables
         this.playerGotBlackjack = false;
         this.dealerGotBlackjack = false;
         this.playerBust = false;
+        this.playerSplitBust = false;
         this.dealerBust = false;
         this.playerWin = false;
+        this.playerSplitWin = false;
+        this.isGameOver = true;
     }
 
     settleBet() {
@@ -150,6 +160,23 @@ class BlackjackGame {
             this.playerHand.addCard(this.deck.deal());
             if (this.playerHand.getValue() > 21) {
                 this.playerBust = true;
+                
+                // check if hand is split
+                if (!this.handIsSplit) {
+                    this.isGameOver = true;
+                } else {
+                    // if hand is split, do not end game yet
+                    this.isGameOver = false;
+                }
+            }
+        }
+    }
+
+    playerHitSplitHand() {
+        if (!this.isGameOver && this.handIsSplit) {
+            this.playerSplitHand.addCard(this.deck.deal());
+            if (this.playerSplitHand.getValue() > 21) {
+                this.playerSplitBust = true;
                 this.isGameOver = true;
             }
         }
@@ -197,6 +224,31 @@ class BlackjackGame {
             console.log("It's a tie! Both have $" + playerValue);
             this.pushes += 1;
             this.playerWin = null; // tie
+        }
+
+        if (this.handIsSplit) {
+            const splitValue = this.playerSplitHand.getValue();
+            if (this.playerSplitBust) {
+                console.log("Player Split Hand Busts");
+                this.losses += 1;
+                this.playerSplitWin = false;
+            } else if (this.dealerBust) {
+                console.log("Dealer Busts - Player Split Hand Wins");
+                this.wins += 1;
+                this.playerSplitWin = true;
+            } else if (splitValue > dealerValue) {
+                console.log("Player Split Hand wins! Player has $" + splitValue + ", Dealer has $" + dealerValue);
+                this.wins += 1;
+                this.playerSplitWin = true;
+            } else if (dealerValue > splitValue) {
+                console.log("Dealer wins against Player Split Hand! Dealer has $" + dealerValue + ", Player has $" + splitValue);
+                this.losses += 1;
+                this.playerSplitWin = false;
+            } else {
+                console.log("It's a tie for Player Split Hand! Both have $" + splitValue);
+                this.pushes += 1;
+                // no change to playerSplitWin for tie
+            }
         }
     }
 
@@ -252,6 +304,68 @@ document.getElementById("reset-button").addEventListener("click", () => {
     // clear any pending automatic reset and reset immediately
     clearResetCountdown();
     resetGame();
+});
+
+document.getElementById("double-down-button").addEventListener("click", () => {
+    if (!gameStarted) {
+        document.getElementById("status").innerText = "Game has not started. Click 'Start Hand' to deal cards.";
+        return;
+    }
+    if (game.playerHand.cards.length !== 2) {
+        document.getElementById("status").innerText = "You can only double down on your initial two cards.";
+        return;
+    }
+    if (game.betAmount * 2 > game.playerMoney.getAmount()) {
+        document.getElementById("status").innerText = "Insufficient funds to double down.";
+        return;
+    }
+    // Double the bet
+    game.betAmount *= 2;
+    document.getElementById("current-bet").innerText = `Current Bet: $${game.betAmount}`;
+    // Player hits once
+    game.playerHit();
+    updateDisplay(game);
+    if (game.isGameOver) {
+        game.checkWhoWon();
+        updateDisplay(game);
+        gameStarted = false;
+        endGameWithResult(game);
+        return;
+    }
+    // Then stand
+    game.dealerPlay();
+    game.checkWhoWon();
+    updateDisplay(game);
+    gameStarted = false;
+    endGameWithResult(game);
+});
+
+document.getElementById("split-hand-button").addEventListener("click", () => {
+    if (!gameStarted) {
+        document.getElementById("status").innerText = "Game has not started. Click 'Start Hand' to deal cards.";
+        return;
+    }
+    if (game.playerHand.cards.length !== 2 || game.playerHand.cards[0].value !== game.playerHand.cards[1].value) {
+        document.getElementById("status").innerText = "You can only split when you have two cards of the same value.";
+        return;
+    }
+    if (game.betAmount * 2 > game.playerMoney.getAmount()) {
+        document.getElementById("status").innerText = "Insufficient funds to split hand.";
+        return;
+    }
+
+    // Split the hand
+    const firstCard = game.playerHand.cards[0];
+    const secondCard = game.playerHand.cards[1];
+    game.playerHand = new Hand();
+    game.playerHand.addCard(firstCard);
+    game.playerSplitHand = new Hand();
+    game.playerSplitHand.addCard(secondCard);
+    game.handIsSplit = true;
+
+    updateDisplay(game);
+    document.getElementById("status").innerText = "Hand split! Play each hand separately.";
+
 });
 
 function resetGame() {
@@ -324,7 +438,7 @@ function startResetCountdown(durationMs) {
     const timerEl = document.getElementById('reset-timer');
     if (!timerEl) return;
     const end = Date.now() + durationMs;
-    /
+    
     const update = () => {
         const remaining = Math.max(0, end - Date.now());
         const secs = Math.ceil(remaining / 1000);
@@ -360,6 +474,26 @@ function updateDisplay(game) {
         document.getElementById("player-hand").innerText = `Player Cards: ${playerCards} (Value: ${game.playerHand.getValue()})`;
         document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ??)`;
         return;
+    } else if (game.handIsSplit && !game.isGameOver) {
+        // Split hands, but game not over yet
+        const playerCards = game.playerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        const playerSplitCards = game.playerSplitHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        const dealerCards = `${game.dealerHand.cards[0].value}${game.dealerHand.cards[0].suit} ??`;
+
+        document.getElementById("player-hand").innerText = `Player Hand 1 Cards: ${playerCards} (Value: ${game.playerHand.getValue()})`;
+        document.getElementById("player-split-hand").innerText = `Player Hand 2 Cards: ${playerSplitCards} (Value: ${game.playerSplitHand.getValue()})`;
+        document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ??)`;
+
+    } else if (game.handIsSplit) {
+        // Split hands, game over
+        const playerCards = game.playerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        const playerSplitCards = game.playerSplitHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        const dealerCards = game.dealerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        
+        document.getElementById("player-hand").innerText = `Player Hand 1 Cards: ${playerCards} (Value: ${game.playerHand.getValue()})`;
+        document.getElementById("player-split-hand").innerText = `Player Hand 2 Cards: ${playerSplitCards} (Value: ${game.playerSplitHand.getValue()})`;
+        document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ${game.dealerHand.getValue()})`;
+
     } else {
         // Show all cards
         const playerCards = game.playerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');

@@ -62,6 +62,24 @@ class Hand {
     }
 }
 
+class PlayerMoney {
+    constructor(initialAmount) {
+        this.amount = initialAmount;
+    }
+
+    win(bet) {
+        this.amount += bet;
+    }
+
+    lose(bet) {
+        this.amount -= bet;
+    }
+
+    getAmount() {
+        return this.amount;
+    }
+}
+
 // Create the BlackjackGame class
 class BlackjackGame {
     constructor() {
@@ -69,6 +87,10 @@ class BlackjackGame {
         // this.deck.shuffle();
         this.playerHand = new Hand();
         this.dealerHand = new Hand();
+        // Settling bets
+        this.playerMoney = new PlayerMoney(1000);
+        this.betAmount = 10; // default bet amount
+
         // Game state variables
         this.playerGotBlackjack = false;
         this.dealerGotBlackjack = false;
@@ -76,6 +98,11 @@ class BlackjackGame {
         this.dealerBust = false;
         this.playerWin = false;
         this.isGameOver = true;
+        // stats
+        this.wins = 0;
+        this.losses = 0;
+        this.pushes = 0;
+        this.blackjacks = 0;
     }
 
     resetGame() {
@@ -87,6 +114,14 @@ class BlackjackGame {
         this.playerBust = false;
         this.dealerBust = false;
         this.playerWin = false;
+    }
+
+    settleBet() {
+        if (this.playerWin === true) {
+            this.playerMoney.win(this.betAmount);
+        } else if (this.playerWin === false) {
+            this.playerMoney.lose(this.betAmount);
+        }
     }
 
     shuffleDeck() {
@@ -103,6 +138,9 @@ class BlackjackGame {
     checkInitialBlackjack() {
         if (this.playerHand.getValue() === 21) {
             this.playerGotBlackjack = true;
+            this.betAmount *= 1.5; // payout 3:2 for blackjack
+            this.playerWin = true;
+            this.blackjacks += 1;
             this.isGameOver = true;
         }
     }
@@ -135,26 +173,34 @@ class BlackjackGame {
         const playerValue = this.playerHand.getValue();
         const dealerValue = this.dealerHand.getValue();
 
-        if (this.dealerBust) {
+        if (this.playerGotBlackjack) {
+            console.log("BLACKJACK!! Player Wins!");
+            this.wins += 1;
+            this.playerWin = true;
+        } else if (this.dealerBust) {
             console.log("Dealer Busts");
+            this.wins += 1;
             this.playerWin = true;
         } else if (this.playerBust) {
             console.log("Player Busts");
+            this.losses += 1;
             this.playerWin = false;
         } else if (playerValue > dealerValue) {
             console.log("Player wins! Player has $" + playerValue + ", Dealer has $" + dealerValue);
+            this.wins += 1;
             this.playerWin = true;
         } else if (dealerValue > playerValue) {
             console.log("Dealer wins! Dealer has $" + dealerValue + ", Player has $" + playerValue);
+            this.losses += 1;
             this.playerWin = false;
         } else {
             console.log("It's a tie! Both have $" + playerValue);
+            this.pushes += 1;
             this.playerWin = null; // tie
         }
     }
 
     getResult() {
-        this.checkWhoWon();
         
         if (this.playerWin === true && this.playerGotBlackjack == true) {
             return "BLACKJACK!! Player Wins!";
@@ -176,6 +222,21 @@ class BlackjackGame {
 
 let gameStarted = false;
 const game = new BlackjackGame();
+let resetTimeoutId = null;
+let resetIntervalId = null;
+
+document.getElementById("bet-submit-button").addEventListener("click", (e) => {
+    e.preventDefault();
+    const betInput = document.getElementById("bet-input");
+    game.betAmount = parseInt(betInput.value);
+    console.log("Bet amount set to: $" + game.betAmount);
+    if (isNaN(game.betAmount) || game.betAmount <= 0 || game.betAmount > game.playerMoney.getAmount()) {
+        document.getElementById("status").innerText = "Please enter a valid bet amount.";
+        return;
+    }
+    document.getElementById("current-bet").innerText = `Current Bet: $${game.betAmount}`;
+    document.getElementById("status").innerText = `Bet of $${game.betAmount} placed. Click 'Start Hand' to deal cards.`;
+});
 
 document.getElementById("start-button").addEventListener("click", () => {
     if (gameStarted) {
@@ -188,13 +249,15 @@ document.getElementById("start-button").addEventListener("click", () => {
 });
 
 document.getElementById("reset-button").addEventListener("click", () => {
-    location.reload();
+    // clear any pending automatic reset and reset immediately
+    clearResetCountdown();
+    resetGame();
 });
 
 function resetGame() {
     game.resetGame();
-    console.log("Game has been reset.");
     updateDisplay(game);
+    clearResetCountdown();
     document.getElementById("status").innerText = "Game has been reset. Click 'Start Game' to play again.";
 }
 
@@ -210,13 +273,13 @@ function startGame() {
         game.dealCards();
         game.checkInitialBlackjack();
 
-        updateDisplay(game);
         gameStarted = true;
     }
     
     updateDisplay(game);
 
     if (game.playerGotBlackjack) {
+        game.checkWhoWon();
         gameStarted = false;
         endGameWithResult(game);
         return;
@@ -227,6 +290,8 @@ function startGame() {
         game.playerHit();
         updateDisplay(game);
         if (game.isGameOver) {
+            game.checkWhoWon();
+            updateDisplay(game);
             gameStarted = false;
             endGameWithResult(game);
         }
@@ -243,12 +308,47 @@ function startGame() {
     };
 }
 
-
 function endGameWithResult(game) {
     updateDisplay(game);
     const result = game.getResult();
     document.getElementById("status").innerText = result;
-    setTimeout(resetGame, 3500);
+    game.settleBet();
+    document.getElementById("player-money").innerText = `Money: $${game.playerMoney.getAmount()}`;
+    document.getElementById("current-record").innerText = `Wins: ${game.wins} || Losses: ${game.losses} || Pushes: ${game.pushes} || Win %: ${game.wins + game.losses + game.pushes > 0 ? Math.round((game.wins / (game.wins + game.losses + game.pushes)) * 100) : 0}% || Blackjacks: ${game.blackjacks}`;
+    // start a visible countdown and then reset
+    startResetCountdown(5000);
+}
+
+function startResetCountdown(durationMs) {
+    clearResetCountdown();
+    const timerEl = document.getElementById('reset-timer');
+    if (!timerEl) return;
+    const end = Date.now() + durationMs;
+    /
+    const update = () => {
+        const remaining = Math.max(0, end - Date.now());
+        const secs = Math.ceil(remaining / 1000);
+        timerEl.innerText = `Resetting in ${secs}s`;
+    };
+    update();
+    resetIntervalId = setInterval(update, 250);
+    resetTimeoutId = setTimeout(() => {
+        clearResetCountdown();
+        resetGame();
+    }, durationMs);
+}
+
+function clearResetCountdown() {
+    if (resetIntervalId) {
+        clearInterval(resetIntervalId);
+        resetIntervalId = null;
+    }
+    if (resetTimeoutId) {
+        clearTimeout(resetTimeoutId);
+        resetTimeoutId = null;
+    }
+    const timerEl = document.getElementById('reset-timer');
+    if (timerEl) timerEl.innerText = '';
 }
 
 function updateDisplay(game) {

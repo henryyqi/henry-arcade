@@ -15,14 +15,22 @@
                     <p>Try to get as close to 21 without going over! Beat the Dealer to win!</p>
                 <div id="player-info-container" class="info-container">
                     <div id="player-money">Money: $1000</div>
-                    <div id="current-bet">Current Bet: $0</div>
+                    <div id="current-bet">Current Bet: $10</div>
+                </div>
+                <div class="bet-form-container">
+                    <form id="bet-form">Enter Bet:
+                        <input type="number" id="bet-input" name="bet-input" min="1" max="1000" value="10">
+                        <button id="bet-submit-button">Place Bet</button>
+                    </form>
+                    <!-- <button id="bet-reset-button">Reset Bet</button> -->
                 </div>
                 <div id="record-container" class="record-container">
-                    <div id="current record">Wins: 0 || Losses: 0 || Pushes: 0 || Win %: 0% || Blackjacks: 0</div>
+                    <div id="current-record">Wins: 0 || Losses: 0 || Pushes: 0 || Win %: 0% || Blackjacks: 0</div>
                 </div>
                 <div class="menu-button-container">
                     <button id="start-button" class="button">Start Hand</button>
                     <button id="reset-button" class="button">Reset Game</button>
+                    <div id="reset-timer" class="score-display" aria-live="polite"></div>  
                 </div>
             </div>  
             <div class="blackjack-container">
@@ -44,10 +52,10 @@
                     <button id="hit-button" class="button">Hit</button>
                     <button id="stand-button" class="button">Stand</button>    
                 </div>
-                <div class="action-button-container">
+                <!-- <div class="action-button-container">
                     <button id="double-down-button" class="button">Double Down</button>
                     <button id="split-hand-button" class="button">Split Hand</button>
-                </div>
+                </div> -->
 
             </div>
         </div>

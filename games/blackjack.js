@@ -51,9 +51,9 @@ class Hand {
         let aces = 0;
 
         for (let card of this.cards) {
-            if (['J', 'Q', 'K'].includes(card.value)) {
+            if (['J', 'Q', 'K'].includes(card.rank)) {
                 value += 10;
-            } else if (card.value === 'A') {
+            } else if (card.rank === 'A') {
                 aces += 1;
                 value += 11; // Initially count Ace as 11
             } else {
@@ -278,7 +278,7 @@ class BlackjackGame {
     }
 
     dealerPlay() {
-        setTimeout(() => {}, 2500); // slight delay for better UX
+        setTimeout(() => {}, 2500); // slight delay for better UX (no-op)
         while (this.dealerHand.getValue() < 17) {
             this.dealerHand.addCard(this.deck.deal());
 
@@ -289,7 +289,7 @@ class BlackjackGame {
                 break;
             }
         }
-        game.isGameOver = true;
+        this.isGameOver = true;
     }
 
     checkWhoWon() {
@@ -458,6 +458,7 @@ function startGame() {
             document.getElementById("status").innerText = "Game has not started. Click 'Start Hand' to deal cards.";
             return;
         }
+
         game.playerHitActive();
         updateDisplay(game);
 
@@ -544,7 +545,7 @@ function startGame() {
     endGameWithResult(game);
     });
     
-    // Set up split hand button (split hits both hands at the same time - needs to be sequential)
+    // Set up split hand button (split hits both hands at the same time - updated to sequential with UX delay)
     document.getElementById("split-hand-button").addEventListener("click", () => {
     if (!gameStarted) {
         document.getElementById("status").innerText = "Game has not started. Click 'Start Hand' to deal cards.";

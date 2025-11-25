@@ -110,6 +110,87 @@
     gap: 10px;
 }
 
+.cards-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin: 8px 0;
+}
+
+.cards-row .card-img {
+    width: 56px;
+    height: auto;
+    border: 1px solid #222;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.card-back {
+    width: 56px;
+    height: 80px;
+    background: linear-gradient(135deg,#2c3e50,#4b6b88);
+    border: 1px solid #222;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    display: inline-block;
+}
+
+/* wrapper + caption for each card */
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.card-desc {
+    font-size: 12px;
+    margin-top: 6px;
+    color: #222;
+    font-weight: bold;
+}
+
+/* deal-in animation */
+.deal-in {
+    animation: dealIn 260ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes dealIn {
+    0% { transform: translateY(-18px) scale(.96); opacity: 0; }
+    60% { transform: translateY(4px) scale(1.02); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* active card indicator for the currently playable split hand */
+.card-wrapper.active-card {
+    border: 2px solid #f39c12;
+    padding: 4px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(243,156,18,0.18);
+    background: linear-gradient(180deg, rgba(243,156,18,0.03), rgba(255,255,255,0.02));
+}
+
+/* separator between split hands - becomes visible when split */
+.hand-separator {
+    width: 70%;
+    height: 10px;
+    margin: 10px 0;
+    display: none; /* shown only when split */
+    align-self: center;
+    position: relative;
+}
+.hand-separator::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%; height: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, transparent, #f39c12, transparent);
+    opacity: 0.85;
+}
+.hand-separator.visible { display: block; }
+
 .info-container {
     background-color: #DDDDDD;
     border: 2px solid black;

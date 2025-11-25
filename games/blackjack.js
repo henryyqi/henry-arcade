@@ -629,17 +629,70 @@ function clearResetCountdown() {
 }
 
 function updateDisplay(game) {
+    // helper to build a card image path and element
+    const cardFileUrl = (card) => `./blackjack.pics/${encodeURIComponent(card.rank + card.suit)}.png`;
+
+    // compute effective numeric value for each card in this hand
+    // (per-card effective-value logic has been removed) captions will show the card's raw value and suit
+
+    const renderCardsRow = (containerId, cards, hideSecond=false, active=false) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < cards.length; i++) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-wrapper';
+            // stagger animation so cards appear sequentially
+            wrapper.classList.add('deal-in');
+            wrapper.style.animationDelay = `${i * 80}ms`;
+
+            // face-down handling for dealer's hidden second card
+            if (hideSecond && i === 1) {
+                const back = document.createElement('div');
+                back.className = 'card-back';
+                wrapper.appendChild(back);
+                const desc = document.createElement('div');
+                desc.className = 'card-desc';
+                desc.innerText = 'Hidden';
+                wrapper.appendChild(desc);
+                if (active) wrapper.classList.add('active-card');
+                container.appendChild(wrapper);
+                continue;
+            }
+
+            const img = document.createElement('img');
+            img.className = 'card-img';
+            img.alt = `${cards[i].value}${cards[i].suit}`;
+            img.src = cardFileUrl(cards[i]);
+
+            const desc = document.createElement('div');
+            desc.className = 'card-desc';
+            desc.innerText = `${cards[i].value}${cards[i].suit}`;
+
+            if (active) wrapper.classList.add('active-card');
+            wrapper.appendChild(img);
+            wrapper.appendChild(desc);
+            container.appendChild(wrapper);
+        }
+    };
     // Check for split hands first (before early returns)
     if (game.handIsSplit) {
-        const playerCards = game.playerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
-        const playerSplitCards = game.playerSplitHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
+        // render card images for both hands and mark active hand
+        const p1Active = !game.isGameOver && game.activeSplitHand === 1;
+        const p2Active = !game.isGameOver && game.activeSplitHand === 2;
+        renderCardsRow('player-cards-row', game.playerHand.cards, false, p1Active);
+        renderCardsRow('player-split-cards-row', game.playerSplitHand.cards, false, p2Active);
         
         // Show split hands appropriately
         if (!game.isGameOver) {
-            const dealerCards = `${game.dealerHand.cards[0].value}${game.dealerHand.cards[0].suit} ??`;
-            document.getElementById("player-hand").innerText = `Player Hand 1: ${playerCards} (Value: ${game.playerHand.getValue()})`;
-            document.getElementById("player-split-hand").innerText = `Player Hand 2: ${playerSplitCards} (Value: ${game.playerSplitHand.getValue()})`;
-            document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ??)`;
+            // show dealer's first card and a face-down placeholder
+            renderCardsRow('dealer-cards-row', game.dealerHand.cards, true);
+            // show separator to help separate hands visually
+            const sep = document.getElementById('player-hand-separator');
+            if (sep) sep.classList.add('visible');
+            document.getElementById("player-hand").innerText = `Hand 1: Value: ${game.playerHand.getValue()}`;
+            document.getElementById("player-split-hand").innerText = `Hand 2: Value: ${game.playerSplitHand.getValue()}`;
+            document.getElementById("dealer-hand").innerText = `Dealer: Value: ??`;
             // toggle active-hand visual indicator
             const h1 = document.getElementById("player-hand");
             const h2 = document.getElementById("player-split-hand");
@@ -654,10 +707,12 @@ function updateDisplay(game) {
             }
         } else {
             // Game over with split
-            const dealerCards = game.dealerHand.cards.map(card => `${card.value}${card.suit}`).join(' ');
-            document.getElementById("player-hand").innerText = `Player Hand 1: ${playerCards} (Value: ${game.playerHand.getValue()})`;
-            document.getElementById("player-split-hand").innerText = `Player Hand 2: ${playerSplitCards} (Value: ${game.playerSplitHand.getValue()})`;
-            document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ${game.dealerHand.getValue()})`;
+            renderCardsRow('dealer-cards-row', game.dealerHand.cards, false);
+            const sep2 = document.getElementById('player-hand-separator');
+            if (sep2) sep2.classList.remove('visible');
+            document.getElementById("player-hand").innerText = `Hand 1: Value: ${game.playerHand.getValue()}`;
+            document.getElementById("player-split-hand").innerText = `Hand 2: Value: ${game.playerSplitHand.getValue()}`;
+            document.getElementById("dealer-hand").innerText = `Dealer: Value: ${game.dealerHand.getValue()}`;
             // clear active indicator on game over
             const h1 = document.getElementById("player-hand");
             const h2 = document.getElementById("player-split-hand");
@@ -669,12 +724,18 @@ function updateDisplay(game) {
 
     // If game is not over, only show one card from dealer (no split case)
     if (!game.isGameOver || (game.isGameOver && game.playerBust) || (game.isGameOver && game.playerGotBlackjack)) {
-        const playerCards = game.playerHand.cards.map(card => `${card.rank}${card.suit}`).join(' ');
-        const dealerCards = `${game.dealerHand.cards[0].value}${game.dealerHand.cards[0].suit} ??`;
-
-        document.getElementById("player-hand").innerText = `Player Cards: ${playerCards} (Value: ${game.playerHand.getValue()})`;
+        renderCardsRow('player-cards-row', game.playerHand.cards, false, !game.isGameOver && game.activeSplitHand === 1);
+        // hide split row
+        const splitRow = document.getElementById('player-split-cards-row');
+        if (splitRow) splitRow.innerHTML = '';
+        // show dealer first card face-up
+        renderCardsRow('dealer-cards-row', game.dealerHand.cards, true);
+        // hide separator if present
+        const sep = document.getElementById('player-hand-separator');
+        if (sep) sep.classList.remove('visible');
+        document.getElementById("player-hand").innerText = `Value: ${game.playerHand.getValue()}`;
         document.getElementById("player-split-hand").innerText = '';
-        document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ??)`;
+        document.getElementById("dealer-hand").innerText = `Dealer: Value: ??`;
         // ensure no active-hand visual remains when not split
         const h1 = document.getElementById("player-hand");
         const h2 = document.getElementById("player-split-hand");
@@ -683,12 +744,16 @@ function updateDisplay(game) {
         return;
     } else {
         // Show all cards (normal, no split)
-        const playerCards = game.playerHand.cards.map(card => `${card.rank}${card.suit}`).join(' ');
-        const dealerCards = game.dealerHand.cards.map(card => `${card.rank}${card.suit}`).join(' ');
-
-        document.getElementById("player-hand").innerText = `Player Cards: ${playerCards} (Value: ${game.playerHand.getValue()})`;
+        renderCardsRow('player-cards-row', game.playerHand.cards, false, false);
+        // hide split row
+        const splitRow2 = document.getElementById('player-split-cards-row');
+        if (splitRow2) splitRow2.innerHTML = '';
+        renderCardsRow('dealer-cards-row', game.dealerHand.cards, false);
+        const sep3 = document.getElementById('player-hand-separator');
+        if (sep3) sep3.classList.remove('visible');
+        document.getElementById("player-hand").innerText = `Value: ${game.playerHand.getValue()}`;
         document.getElementById("player-split-hand").innerText = '';
-        document.getElementById("dealer-hand").innerText = `Dealer Cards: ${dealerCards} (Value: ${game.dealerHand.getValue()})`;
+        document.getElementById("dealer-hand").innerText = `Dealer: Value: ${game.dealerHand.getValue()}`;
         // ensure no active-hand visual remains when not split
         const h1 = document.getElementById("player-hand");
         const h2 = document.getElementById("player-split-hand");
